@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block body %}
+<br>
+<hr>
+filter by
+<hr>
+catagory
+<br>
+<div id="type">
+    {% for pt in productstype %}
+<div ><input id="{{pt}}" name="type" value="{{pt}}" type="checkbox"><label for="{{pt}}">{{pt}}</label></div>
+{% endfor %}
+</div>
+<br>
+<hr>
+sort by
+<hr>
+<div id="sort">
+    <div><input id="l_to_h" name="sort" value="price" type="radio"><label for="l_to_h">price low to high</label></div>
+    <div><input id="h_to_l" name="sort" value="-price" type="radio"><label for="h_to_l">price high to low</label></div>
+    <div><input id="latest" name="sort" value="-id" type="radio"><label for="latest">sort by latest</label></div>
+    <div><input id="popularity" name="sort" value="-popularity" type="radio"><label for="popularity">sort by popularity</label></div>
+</div>
+<button onclick="sorteverything()">sort and filter</button>
+<br>
+all products
+<hr>
+<br>
+{% if products %}
+{% for pr in products %} <a href="/products/{{pr.slug}}">{{pr.name}}</a> {{pr.price}}<br>{% endfor %}{% else %}
+<span>no products to show</span>{% endif %}
+<script>
+    const searchparams = new URLSearchParams();
+</script>
+<script>
+    function sortandfilter(formid) {
+        let formname = document.getElementById(formid)
+        let value = ''
+        for (let k = 0;k<=formname.childElementCount-1;k++) {
+            formname.children[k].children[0].checked? value = value + formname.children[k].children[0].value+"_":undefined
+        }
+        let result = value.slice(0,-1)
+        if (result.length !== 0) {
+        searchparams.set(formname.children[0].children[0].name,result);
+        console.log(searchparams.toString());
+        let currentUrl = new URL(window.location.href);
+        var baseUrl = currentUrl.origin + currentUrl.pathname;
+        console.log(baseUrl);
+        const newUrl = baseUrl + '?' + searchparams.toString();
+            window.location =  newUrl
+        }
+    }
+    function sortedwith(formid) {
+        let urlParams = new URLSearchParams(window.location.search);
+        let values = urlParams.getAll(formid);
+        let formname = document.getElementById(formid)
+        if (values.length === 0) {
+            return 0;
+        }
+        let value = values.pop()
+        let splitedvalues = value.split("_")
+        console.log(splitedvalues);
+        for (let k = 0;k<=formname.childElementCount-1;k++) {
+            if(splitedvalues.includes(formname.children[k].children[0].value))
+            formname.children[k].children[0].checked = 'true'
+        }
+    }
+    function sorteverything() {
+        sortandfilter('type')
+        sortandfilter('sort')
+    }
+    sortedwith('type')
+    sortedwith('sort')
+</script>
+
+  
+{% endblock body %}

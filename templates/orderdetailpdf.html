@@ -1,0 +1,33 @@
+{% extends 'basedetailpdf.html' %}
+{% block body %}
+<div><span>Date ordered : {{objects.first.date_ordered|date:"F j, Y"}}</span></div>
+<table>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Phone No</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>Postal Code</th>
+      <th>Products Ordered</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in objects %}
+    <tr>
+      <td>{{ object.first_name }}</td>
+      <td>{{ object.last_name }}</td>
+      <td>{{ object.phone_no }}</td>
+      <td>{{ object.address }}</td>
+      <td>{{ object.city }}</td>
+      <td>{{ object.postal_code }}</td>
+      <td>{% for order_item in object.orderitem_set.all %}
+        {{order_item.product.sku}}{% if not forloop.last %},{% endif %}
+      {% endfor %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock body %}
+  

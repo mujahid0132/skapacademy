@@ -1,0 +1,36 @@
+{% load mptt_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul class="">
+        {% recursetree product_types %}
+        <li>
+          <input type="checkbox" id="{{ node.pk }}" value="{{ node.pk }}" onchange="checkChildren(this)">
+          <label for="{{ node.pk }}">{{ node.name }}</label>
+          {% if not node.is_leaf_node %}
+            <ul class="">
+              {{ children }}
+            </ul>
+          {% endif %}
+        </li>
+        {% endrecursetree %}
+      </ul>
+      <script>
+        function checkChildren(checkbox) {
+          var parent = checkbox.parentNode;
+          var children = parent.getElementsByTagName('input');
+          for (var i = 0; i < children.length; i++) {
+            children[i].checked = checkbox.checked;
+          }
+        }
+      </script>
+      
+
+</body>
+</html>

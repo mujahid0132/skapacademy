@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block body %}home
+{% for pr in products %} <a href="/products/{{pr.slug}}">{{pr.name}}</a> {% endfor %}{% endblock body %}

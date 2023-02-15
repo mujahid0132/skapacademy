@@ -1,0 +1,24 @@
+{% extends 'basedetailpdf.html' %}
+{% block body %}
+<div><span>Date Of Form Submission : {{objects.first.date_of_form_submission|date:"F j, Y"}}</span></div>
+<table>
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone No</th>
+    <th>CV</th>
+  </tr>
+</thead>
+<tbody>
+  {% for object in objects %}
+  <tr>
+    <td>{{ object.name }}</td>
+    <td>{{ object.email }}</td>
+    <td>{{ object.phone_number }}</td>
+    <td><a href="/media/{{ object.cv }}">Open CV</a></td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% endblock body %}

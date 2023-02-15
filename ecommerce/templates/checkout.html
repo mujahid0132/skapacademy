@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}checkout
+<form action="/complete/" name="details" method="post">
+    <span>contact information</span><br>
+    {% csrf_token %}
+    <input type="text" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
+    <input type="text" required name="phone_no" placeholder="Mobile No." class="border-2 border-black m-2" id="">
+    <span class="text-sm text-red-500"></span>
+    <input type="text" required name="first_name" placeholder="Firstname" class="border-2 border-black m-2" id="">
+    <span class="text-sm text-red-500"></span><br>
+    <input type="text" required name="last_name" placeholder="Lastname" class="border-2 border-black m-2" id="">
+    <span class="text-sm text-red-500"></span>
+    <input type="text" required name="address" placeholder="address" class="border-2 border-black m-2" id="">
+    <span class="text-sm text-red-500"></span><br>
+    <input type="text" required name="city" placeholder="City" class="border-2 border-black m-2" id="">
+    <span class="text-sm text-red-500"></span>
+    <input type="text" required name="postal_code" placeholder="Postal Code" class="border-2 border-black m-2" id="">
+    <span class="text-sm text-red-500"></span><br>
+    <select required name="country">
+        <option value="pakistan" selected>Pakistan</option>
+      </select>
+      <span class="text-sm text-red-500"></span>
+    {% comment %} <input type="text" required name="phone" placeholder="Phone" class="border-2 border-black m-2" id=""> {% endcomment %}
+    {% comment %} <span class="text-sm text-red-500"></span><br> {% endcomment %}
+    <input type="text" name="product"  id="product" class="hidden">
+    <input type="text" name="quantity" id="quantity" class="hidden">
+</form>
+<div id="confirmdetails" class="hidden">
+  <div class="space-x-1">
+    <span class="font-bold">Contact:</span><span></span>
+    <button type="button" onclick="previous()" class="text-blue-400 underline">Edit</button>
+  </div>
+  <div class="space-x-1">
+    <span class="font-bold">Ship To:</span><span></span>
+    <button type="button" onclick="previous()" class="text-blue-400 underline">Edit</button>
+  </div>
+</div>
+<div id="paymentdiv" class="hidden">
+  <select name="paymentmethod" id="paymentmethod">
+    <option value="cod" selected>CASH ON DELIVERY</option>
+  </select>
+</div>
+<button id="continuebtn" onclick="detailsvalidate()">continue to shipping</button>
+<button id="completeorder" class="hidden" onclick="submit()">complete order</button>
+<div id="productsincart">
+  {% for pr in products %}
+    <div class="float-right mr-24">
+      <span>{{pr.name}}</span>
+      <div class="relative bg-green-500 w-12 h-12">
+         <img src="/media/{{pr.image}}" alt="{{pr.name}}-img">
+         <span id="quantity{{pr.slug}}" class="bg-red-500 w-4 text-xs absolute top-0 right-0 aspect-square rounded-full text-center"></span>
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock body %}

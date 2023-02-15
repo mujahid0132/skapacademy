@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% load static %} 
+{% block body %} 
+product detail
+<div id="productname">{{product.name}}</div>
+<div id="producttype">{{product.type}}</div>
+<div id="productprice">{{product.price}}</div>
+<div id="productdiscountedprice">{{product.discounted_price}}</div>
+
+<img id="productimg" src="/media/{{product.image}}" alt="" />
+<div id="quantitydiv">
+  <button onclick="decreasequantity()">-</button>
+  <span id="quantity">1</span>
+  <button onclick="increasequantity()">+</button>
+</div>
+<button id="addtocartbtn" onclick="addtocart()">add to cart</button>
+<script src={% static 'productdetail.js' %}></script> 
+{% endblock body %}
