@@ -23,7 +23,7 @@
       <td>{{ object.city }}</td>
       <td>{{ object.postal_code }}</td>
       <td>{% for order_item in object.orderitem_set.all %}
-        {{order_item.product.sku}}{% if not forloop.last %},{% endif %}
+        {{order_item.product.sku}}({{order_item.quantity}}){% if not forloop.last %},{% endif %}
       {% endfor %}</td>
     </tr>
     {% endfor %}
