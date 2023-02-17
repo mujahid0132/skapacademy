@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #my-rectangle {
+  width: 400px;
+  height: 200px;
+  background-color: #ccc;
+  position: relative;
+}
+
+#my-ball {
+  width: 50px;
+  height: 50px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  transition: 0.5s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotate 2s linear infinite;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+    </style>
+</head>
+<body>
+    <div id="my-rectangle">
+        <div id="my-ball">
+            <div>fad</div>
+        </div>
+      </div>
+    <script>const rectangle = document.getElementById("my-rectangle");
+        const ball = document.getElementById("my-ball");
+        let isMouseOver = false;
+        
+        rectangle.addEventListener("mouseover", () => {
+          isMouseOver = true;
+        });
+        
+        rectangle.addEventListener("mouseout", () => {
+          isMouseOver = false;
+        });
+        
+        rectangle.addEventListener("mousemove", (event) => {
+          if (isMouseOver) {
+            // Get the x and y coordinates of the mouse pointer within the rectangle
+            const x = event.clientX - rectangle.offsetLeft;
+            const y = event.clientY - rectangle.offsetTop;
+        
+            // Update the position of the ball to follow the mouse
+            updateBallPosition(x, y);
+          }
+        });
+        
+        function updateBallPosition(x, y) {
+          // Get the width and height of the rectangle and the ball
+          const rectWidth = rectangle.offsetWidth;
+          const rectHeight = rectangle.offsetHeight;
+          const ballWidth = ball.offsetWidth;
+          const ballHeight = ball.offsetHeight;
+        
+          // Calculate the maximum x and y coordinates for the ball within the rectangle
+          const maxX = rectWidth - ballWidth;
+          const maxY = rectHeight - ballHeight;
+        
+          // Calculate the x and y coordinates of the center of the ball
+          const ballX = x - ballWidth / 2;
+          const ballY = y - ballHeight / 2;
+        
+          // Set the position of the ball to follow the mouse, but keep it within the boundaries of the rectangle
+          if (ballX < 0) {
+            ball.style.left = "0px";
+          } else if (ballX > maxX) {
+            ball.style.left = maxX + "px";
+          } else {
+            ball.style.left = ballX + "px";
+          }
+        
+          if (ballY < 0) {
+            ball.style.top = "0px";
+          } else if (ballY > maxY) {
+            ball.style.top = maxY + "px";
+          } else {
+            ball.style.top = ballY + "px";
+          }
+        }
+        
+        function updateRandomBallPosition() {
+          // Get a random x and y coordinate within the rectangle
+          const twopercentwidth = 30/100*rectangle.offsetWidth;
+          const twopercentheight = 30/100*rectangle.offsetHeight;
+          console.log(twopercentwidth);
+          console.log(twopercentheight);
+          const x = Math.random() * twopercentwidth;
+          const y = Math.random() * twopercentheight;
+          console.log(x);
+          console.log(y);
+          updateBallPosition(x, y);
+        }
+        
+        setInterval(() => {
+          if (!isMouseOver) {
+            updateRandomBallPosition();
+          }
+        }, 1000);
+        
+    </script>
+</body>
+</html>
