@@ -2,7 +2,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django_quill.fields import QuillField
 from mptt.models import MPTTModel
-from django.db.models import Sum, F
 
 class ProductType(MPTTModel):
     name = models.CharField(max_length=255,primary_key=True)
