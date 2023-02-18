@@ -27,11 +27,15 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(AddButtonInAdmin):
     actions = ['delete_selected','unarchive']
+
+
     list_filter = ("date_ordered",)
     date_hierarchy = "date_ordered"
-    # list_display = []
     inlines = (OrderItemInline,)
     readonly_fields = ('date_ordered','transaction_id')
+
+
+    
     def get_actions(self, request):
         actions = super().get_actions(request)
         if request.user.is_superuser:
