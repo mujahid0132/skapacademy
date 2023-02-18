@@ -10,10 +10,6 @@ class ProductTypeAdmin(DraggableMPTTAdmin):
     list_display_links = ('indented_title',)
     mptt_level_indent = 30
     fields = ('name', 'parent')
-    class Media:
-        css = {
-            'all': ('custom.css',),
-        }
 
 admin.site.register(ProductType, ProductTypeAdmin)
 class ProductAdmin(admin.ModelAdmin):
