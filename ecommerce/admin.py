@@ -4,21 +4,23 @@ from ecommerce.addbutton import AddButtonInAdmin
 from django.urls import reverse
 from django.shortcuts import redirect
 from mptt.admin import DraggableMPTTAdmin
-admin.site.register(
-    ProductType,
-    DraggableMPTTAdmin,
-    list_display=(
-        'tree_actions',
-        'indented_title',
-    ),
-    list_display_links=(
-        'indented_title',
-    ),
-    mptt_level_indent = 30,
-    fields = ('name','parent')
-)
+from django.utils.html import format_html
+class ProductTypeAdmin(DraggableMPTTAdmin):
+    list_display = ('tree_actions', 'indented_title')
+    list_display_links = ('indented_title',)
+    mptt_level_indent = 30
+    fields = ('name', 'parent')
+    class Media:
+        css = {
+            'all': ('custom.css',),
+        }
+
+admin.site.register(ProductType, ProductTypeAdmin)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name','type','price','discounted_price','popularity']
+    list_display = ['image_tag','name','type','price','discounted_price','popularity']
+    def image_tag(self, obj):
+        return format_html('<img src="{}" width="30" height="30" />'.format(obj.image.url))
+    image_tag.short_description = 'Image'
     readonly_fields = ('slug','popularity',)
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -27,7 +29,6 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(AddButtonInAdmin):
     actions = ['delete_selected','unarchive']
-
 
     list_filter = ("date_ordered",)
     date_hierarchy = "date_ordered"
