@@ -15,7 +15,7 @@ admin.site.register(
         'indented_title',
     ),
     mptt_level_indent = 30,
-    fields = ('name',)
+    fields = ('name','parent')
 )
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name','type','price','discounted_price','popularity']
