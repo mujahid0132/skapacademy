@@ -1,0 +1,34 @@
+
+      @media (min-width: 850px) {
+        .aboutus::before,
+        .aboutus::after {
+          content: "";
+          position: absolute;
+          right: 0;
+        }
+        .aboutus::after {
+          height: 25%;
+          width: 25%;
+          bottom: -14px;
+          left: -10px;
+          border-left: 14px solid blue;
+          border-bottom: 14px solid blue;
+        }
+        .aboutus::before {
+          height: 30%;
+          width: 30%;
+          top: -18px;
+          right: -14px;
+          border-top: 18px solid red;
+          border-right: 18px solid red;
+        }
+}
+      .skapservices::after {
+        content: "";
+        position: absolute; 
+        width: 60%;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-60%);
+        border-bottom: 2px solid #fcc028;
+      }

@@ -1,0 +1,21 @@
+.our-ideology::before,
+      .our-ideology::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        height: 75%;
+        width: 25%;
+        z-index: -200;
+      }
+      .our-ideology::after {
+        bottom: 0;
+        left: 0;
+        border-left: 4px solid black;
+        border-bottom: 4px solid black;
+      }
+      .our-ideology::before {
+        top: 0;
+        right: 0;
+        border-right: 4px solid black;
+        border-top: 4px solid black;
+      }

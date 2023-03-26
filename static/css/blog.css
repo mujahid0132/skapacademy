@@ -1,0 +1,8 @@
+.fromtheblog::after {
+    content: "";
+    position: absolute; 
+    width: 150%;
+    bottom: -10px;
+    left: 0;
+    border-bottom: 2px solid #fcc028;
+  }
