@@ -11,16 +11,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%)ms04w-mz$=1lxj78voewsudhuj&2l)9aet25xc-je$s2_42u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['gujjar.skapacademy.pk']
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "admin_interface",
-    "colorfield",
+    # "admin_interface",
+    # "colorfield",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -31,8 +31,17 @@ INSTALLED_APPS = [
     'ecommerce',
     'registration',
     'lms',
-    'mptt'
+    'mptt',
+    'tailwind',
+    'skap',
+    'django_browser_reload'
+
 ]
+NPM_BIN_PATH = r"C:\Users\MujahidNisar\AppData\Roaming\npm\yarn.cmd"
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+TAILWIND_APP_NAME = 'skap'
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 MIDDLEWARE = [
@@ -43,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'

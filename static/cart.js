@@ -71,7 +71,7 @@ function checkout() {
     let keysString = keys.join("_");
     $.ajax({
         type: "POST",
-        url: "/checkout/",
+        url: "/shop/checkout/",
         data: {'products': keysString,
         'csrfmiddlewaretoken':csrf[0].value},
         success: function(html) {

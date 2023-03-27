@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'shopbase.html' %}
 {% load static %}
 {% block body %}checkout
-<form action="/complete/" name="details" method="post">
+<form action="/shop/complete/" name="details" method="post">
     <span>contact information</span><br>
     {% csrf_token %}
     <input type="text" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">

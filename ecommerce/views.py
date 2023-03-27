@@ -5,12 +5,12 @@ from django.shortcuts import get_object_or_404
 from django.apps import apps
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.loader import get_template
-def home(request):
+def shop(request):
     products = Product.objects.order_by('-id')[:5]
     context = {
         'products':products
         }
-    return render(request,"home.html",context)
+    return render(request,"shop.html",context)
 def productdetail(request,slug):
     product = get_object_or_404(Product, slug=slug)
     context = {
@@ -98,7 +98,7 @@ def showdates(request,db_table):
         'dates':dates,
         'model':table[2]
         }
-    return render(request,"orders-download.html",context)
+    return render(request,"download.html",context)
 @staff_member_required
 def detail(request,db_table,date):
     table = db_table_seperator(db_table)
