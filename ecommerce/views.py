@@ -2,15 +2,10 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.apps import apps
-from django.contrib.admin.views.decorators import staff_member_required
-from django.template.loader import get_template
+from django.core.paginator import Paginator
+from django.urls import reverse
 def shop(request):
-    products = Product.objects.order_by('-id')[:5]
-    context = {
-        'products':products
-        }
-    return render(request,"shop.html",context)
+    return redirect("/shop/products/")
 def productdetail(request,slug):
     product = get_object_or_404(Product, slug=slug)
     context = {
@@ -18,13 +13,12 @@ def productdetail(request,slug):
         }
     return render(request,"productdetail.html",context)
 def products(request):
-    productstype = Product.objects.values_list('type',flat=True).distinct()
-    print(productstype)
+    productstype = ProductType.objects.all()
     params = request.GET
     sortkey = request.GET.get('sort')
     b = Q()
     for key, value in params.items():
-        if key == 'sort':
+        if key == 'sort' or key == "page":
             continue
         q = string_to_q(key,value)
         b = b & q
@@ -32,7 +26,15 @@ def products(request):
         products = Product.objects.filter(b).order_by('-id')
     else:
         products = Product.objects.filter(b).order_by(sortkey , 'name')
+    paginator = Paginator(products, 20)
+    page_number = request.GET.get('page')
+    if not page_number:
+        page_obj = paginator.get_page(1)
+    else:
+        page_obj = paginator.get_page(page_number)
+    print(page_obj.paginator.num_pages)
     context = {
+        'page_obj':page_obj,
         'products':products,
         'productstype':productstype,
         }
@@ -83,41 +85,6 @@ def complete_order(request):
         order.save()
         return render(request, 'base.html')
     return redirect("/")
-def test(request):
-    product_types = ProductType.objects.all()
-    context = {
-        'product_types':product_types,
-        }
-    return render(request,"test.html",context)
-@staff_member_required
-def showdates(request,db_table):
-    table = db_table_seperator(db_table)
-    dates = table[1].objects.dates(table[2],'day')
-    print(dates)
-    context = {
-        'dates':dates,
-        'model':table[2]
-        }
-    return render(request,"download.html",context)
-@staff_member_required
-def detail(request,db_table,date):
-    table = db_table_seperator(db_table)
-    objects = table[1].objects.filter(**{f'{table[2]}__date': date})
-    context = {
-        'objects':objects,
-        }
-    template = f"{table[1]._meta.model_name}detailpdf.html"
-    return render(request,template,context)
-def db_table_seperator(db_table):
-    words = db_table.split("_")
-    model = words[1]
-    appname = words[0]
-    model_name = apps.get_model(app_label=appname, model_name=model)
-    for field in model_name._meta.fields:
-        if isinstance(field, models.DateTimeField):
-            date_time_field_name = field.name
-            break
-    return [appname,model_name,date_time_field_name]
 def request_a_book(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -127,5 +94,10 @@ def request_a_book(request):
         book_name = request.POST.get('book_name')
         bookorder = BookRequest.objects.create(first_name = first_name,last_name= last_name,email = email,phone_no=phone_no,book_name=book_name)
         bookorder.save()
-        return render(request, 'bookrequest.html')
     return render(request, 'bookrequest.html')
+def test(request):
+    productstype = ProductType.objects.all()
+    context = {
+        'productstype':productstype ,
+        }
+    return render(request,"test.html",context)

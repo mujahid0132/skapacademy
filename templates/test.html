@@ -1,36 +1,77 @@
 {% load mptt_tags %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <ul class="">
-        {% recursetree product_types %}
-        <li>
-          <input type="checkbox" id="{{ node.pk }}" value="{{ node.pk }}" onchange="checkChildren(this)">
-          <label for="{{ node.pk }}">{{ node.name }}</label>
-          {% if not node.is_leaf_node %}
-            <ul class="">
-              {{ children }}
-            </ul>
-          {% endif %}
-        </li>
-        {% endrecursetree %}
-      </ul>
-      <script>
-        function checkChildren(checkbox) {
-          var parent = checkbox.parentNode;
-          var children = parent.getElementsByTagName('input');
-          for (var i = 0; i < children.length; i++) {
-            children[i].checked = checkbox.checked;
-          }
+      {% recursetree productstype %}
+      <li>
+        <input
+          class="type"
+          type="checkbox"
+          id="{{ node.pk }}"
+          value="{{ node.pk }}"
+          onchange="checkChildren(this)"
+        />
+        <label for="{{ node.pk }}">{{ node.name }}</label>
+        {% if not node.is_leaf_node %}
+        <ul class="">
+          {{ children }}
+        </ul>
+        {% endif %}
+      </li>
+      {% endrecursetree %}
+    </ul>
+    <button onclick="sortandfilter('type','checkbox')">
+      Filter
+    </button>
+    <div>
+      <input id="l_to_h" class="sort" name="sort" value="price" type="radio" />
+      <label for="l_to_h">price low to high</label>
+    </div>
+    <div>
+      <input id="h_to_l" class="sort" name="sort" value="-price" type="radio" />
+      <label for="h_to_l">price high to low</label>
+    </div>
+    <div>
+      <input id="latest" class="sort" name="sort" value="-id" type="radio" />
+      <label for="latest">sort by latest</label>
+    </div>
+    <div>
+      <input id="popularity" class="sort" name="sort" value="-popularity" type="radio" />
+      <label for="popularity">sort by popularity</label>
+    </div>
+    <button onclick="sortandfilter('sort','radio')">
+      Sort
+    </button>
+    <script>
+      function checkChildren(checkbox) {
+        let parent = checkbox.parentNode;
+        let children = parent.getElementsByTagName("input");
+        for (let i = 0; i < children.length; i++) {
+          children[i].checked = checkbox.checked;
         }
-      </script>
-      
+      }
+      function sortandfilter(operation, type) {
+        let checkboxes = document.querySelectorAll(
+          `input[type="${type}"]:checked.${operation}`
+        );
+        let selectedTypes = Array.from(checkboxes).map(function (checkbox) {
+          return checkbox.value;
+        });
 
-</body>
+        let parameters = new URLSearchParams(window.location.search);
+        let url = new URL(window.location.href);
+        let currentUrl = url.origin + url.pathname;
+        parameters.set(operation, selectedTypes.join("_"));
+        const newUrl = `${currentUrl}?${parameters.toString()}`;
+        window.history.replaceState(null, null, newUrl);
+      }
+    </script>
+  </body>
 </html>

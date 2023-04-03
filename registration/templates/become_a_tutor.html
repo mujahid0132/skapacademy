@@ -1,61 +1,61 @@
-{% extends 'base.html' %}
-{% block body %}
-becomme a tutor
-<br>
-<form action="/registration/become-a-tutor/" enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2" id="">
-    <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
-    <select required name="gender">
-        <option value="male" selected>Male</option>
-        <option value="female">Female</option>
+{% extends 'skapbase.html' %}
+{% block main %}
+  becomme a tutor
+  <br>
+  <form action="/registration/become-a-tutor/" enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2" id="">
+      <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
+      <select required name="gender">
+          <option value="male" selected>Male</option>
+          <option value="female">Female</option>
+        </select>
+        <span>D.O.B.</span>
+      <input type="date" required name="date_of_birth"class="border-2 border-black m-2" id="">
+      
+      <input type="tel" required name="phone_number" placeholder="Phone Number" class="border-2 border-black m-2" id="">
+      <input type="tel" required name="whatsapp_number" placeholder="WhatsApp Number" class="border-2 border-black m-2" id="">
+      <input type="text" required name="years_of_experience" placeholder="Years Of Experience" class="border-2 border-black m-2" id="">
+      <input type="text" required name="highest_qualification_and_institute" placeholder="Highest Qualification And Institute" class="border-2 border-black m-2" id="">
+      <select required name="educational_background" id="educational_background" onchange="edu_bg()">
+          <option value="olevel_igcse_alevel" selected>O level, IGCSE/ A level</option>
+          <option value="matric_fsc">Matric / FSc</option>
+          <option value="other">Other</option>
       </select>
-      <span>D.O.B.</span>
-    <input type="date" required name="date_of_birth"class="border-2 border-black m-2" id="">
-    
-    <input type="tel" required name="phone_number" placeholder="Phone Number" class="border-2 border-black m-2" id="">
-    <input type="tel" required name="whatsapp_number" placeholder="WhatsApp Number" class="border-2 border-black m-2" id="">
-    <input type="text" required name="years_of_experience" placeholder="Years Of Experience" class="border-2 border-black m-2" id="">
-    <input type="text" required name="highest_qualification_and_institute" placeholder="Highest Qualification And Institute" class="border-2 border-black m-2" id="">
-    <select required name="educational_background" id="educational_background" onchange="edu_bg()">
-        <option value="olevel_igcse_alevel" selected>O level, IGCSE/ A level</option>
-        <option value="matric_fsc">Matric / FSc</option>
-        <option value="other">Other</option>
-    </select>
-    <input type="text" id="other_educational_background" name="other_educational_background" placeholder="Specify Other Educational Background" class="border-2 border-black m-2 hidden" id="">
-    <input type="text" required name="can_teach_classes" placeholder="Classes you can teach" class="border-2 border-black m-2" id="">
-    <input type="text" required name="can_teach_subjects" placeholder="Subjects you can teach" class="border-2 border-black m-2" id="">
-    <input type="text" required name="can_teach_in_areas" placeholder="In which areas you can teach" class="border-2 border-black m-2" id="">
-    <label >Can you teach on online platforms</label>
-    <label for="yes">Yes</label>
-    <input type="radio" required value="yes" name="can_teach_on_online_platforms" class="border-2 border-black m-2" id="yes">
-    <label for="no">No</label>
-    <input type="radio" required value="no" name="can_teach_on_online_platforms" class="border-2 border-black m-2" id="no">
-    <br>
-    <textarea name="message_or_objective" placeholder="Message Or Objective" class="border-2 border-black m-2" cols="30" rows="10"></textarea>
-    <label>CNIC</label>
-    <input type="file" name="cnic_image" required />
-    <input type="file" name="latest_certificate_picture" required />
-    <input type="file" name="cv" required />
-    <button type="submit">submit</button>
-</form>
-<script>
-    let educational_background = document.getElementById("educational_background");
-    let other_educational_background = document.getElementById("other_educational_background");
-    function edu_bg() {
-      var selectedOption = educational_background.options[educational_background.selectedIndex].value;
-      if (selectedOption === "other"){
-        other_educational_background.classList.remove("hidden")
-        other_educational_background.setAttribute("required","true")
-      }else{
-        other_educational_background.classList.add("hidden")
-        other_educational_background.removeAttribute("required")
+      <input type="text" id="other_educational_background" name="other_educational_background" placeholder="Specify Other Educational Background" class="border-2 border-black m-2 hidden" id="">
+      <input type="text" required name="can_teach_classes" placeholder="Classes you can teach" class="border-2 border-black m-2" id="">
+      <input type="text" required name="can_teach_subjects" placeholder="Subjects you can teach" class="border-2 border-black m-2" id="">
+      <input type="text" required name="can_teach_in_areas" placeholder="In which areas you can teach" class="border-2 border-black m-2" id="">
+      <label >Can you teach on online platforms</label>
+      <label for="yes">Yes</label>
+      <input type="radio" required value="yes" name="can_teach_on_online_platforms" class="border-2 border-black m-2" id="yes">
+      <label for="no">No</label>
+      <input type="radio" required value="no" name="can_teach_on_online_platforms" class="border-2 border-black m-2" id="no">
+      <br>
+      <textarea name="message_or_objective" placeholder="Message Or Objective" class="border-2 border-black m-2" cols="30" rows="10"></textarea>
+      <label>CNIC</label>
+      <input type="file" name="cnic_image" required />
+      <input type="file" name="latest_certificate_picture" required />
+      <input type="file" name="cv" required />
+      <button type="submit">submit</button>
+  </form>
+  <script>
+      let educational_background = document.getElementById("educational_background");
+      let other_educational_background = document.getElementById("other_educational_background");
+      function edu_bg() {
+        var selectedOption = educational_background.options[educational_background.selectedIndex].value;
+        if (selectedOption === "other"){
+          other_educational_background.classList.remove("hidden")
+          other_educational_background.setAttribute("required","true")
+        }else{
+          other_educational_background.classList.add("hidden")
+          other_educational_background.removeAttribute("required")
 
+        }
       }
-    }
-    edu_bg()
-</script>
-<!-- cnic_image = models.ImageField(upload_to="teachers/cnic/")
-latest_certificate_picture = models.ImageField(upload_to="teachers/certificates/")
-cv = models.FileField(upload_to="techers/cv/") -->
-{% endblock body %}
+      edu_bg()
+  </script>
+  <!-- cnic_image = models.ImageField(upload_to="teachers/cnic/")
+  latest_certificate_picture = models.ImageField(upload_to="teachers/certificates/")
+  cv = models.FileField(upload_to="techers/cv/") -->
+{% endblock main %}

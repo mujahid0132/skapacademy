@@ -1,26 +1,29 @@
 {% extends 'basedetailpdf.html' %}
 {% block body %}
 <div><span>Date Requested : {{objects.first.date_requested|date:"F j, Y"}}</span></div>
-<table>
-<thead>
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Phone No</th>
-    <th>Course Name</th>
-    <th>Message</th>
-  </tr>
-</thead>
-<tbody>
-  {% for object in objects %}
-  <tr>
-    <td>{{ object.name }}</td>
-    <td>{{ object.email }}</td>
-    <td>{{ object.phone_number }}</td>
-    <td>{{ object.course_name }}</td>
-    <td>{{ object.message }}</td>
-  </tr>
-  {% endfor %}
-</tbody>
-</table>
+<div class="flex justify-center">
+  <table class="w-full border-collapse mx-auto">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border border-gray-400 px-4 py-2">Name</th>
+        <th class="border border-gray-400 px-4 py-2">Email</th>
+        <th class="border border-gray-400 px-4 py-2">Phone No</th>
+        <th class="border border-gray-400 px-4 py-2">Course Name</th>
+        <th class="border border-gray-400 px-4 py-2">Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in objects %}
+      <tr>
+        <td class="border border-gray-400 px-4 py-2">{{ object.name }}</td>
+        <td class="border border-gray-400 px-4 py-2">{{ object.email }}</td>
+        <td class="border border-gray-400 px-4 py-2">{{ object.phone_number }}</td>
+        <td class="border border-gray-400 px-4 py-2">{{ object.course_name }}</td>
+        <td class="border border-gray-400 px-4 py-2">{{ object.message }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock body %}

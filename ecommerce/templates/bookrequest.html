@@ -1,6 +1,6 @@
 {% extends 'shopbase.html' %}
 {% block body %}
-<form action="/request-a-book/" method="post">
+<form action="/shop/request-a-book/" method="post">
     <span>contact information</span><br>
     {% csrf_token %}
     <input type="text" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
@@ -13,4 +13,7 @@
     <input type="text" required name="book_name" placeholder="Book Name" class="border-2 border-black m-2" id="">
     <button type="submit">submit</button>
 </form>
+<script>
+    
+</script>
 {% endblock body %}

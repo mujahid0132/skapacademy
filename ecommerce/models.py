@@ -5,13 +5,22 @@ from mptt.models import MPTTModel
 
 class ProductType(MPTTModel):
     name = models.CharField(max_length=255,primary_key=True)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.SET_NULL)
+    is_archived = models.BooleanField(default=False)      
 
     class MPTTMeta:
         order_insertion_by = ['name']
-
+    class Meta:
+        verbose_name = "Catagory"
+        verbose_name_plural = "Catagories"
     def __str__(self):
         return self.name
+    def delete(self, using=None, keep_parents=False):
+        if not self.is_archived:
+            self.is_archived = True
+            self.save()
+        else:
+            super().delete(using=using, keep_parents=keep_parents)
 class Product(models.Model):
     name = models.CharField(max_length=50,default='',unique=True)
     sku = models.CharField(max_length=50,default='')
@@ -22,6 +31,7 @@ class Product(models.Model):
     discounted_price = models.DecimalField(max_digits=10, decimal_places=0)
     slug = models.SlugField(max_length=255,unique=True,blank=True)
     popularity = models.IntegerField(default=0)
+    is_archived = models.BooleanField(default=False)      
     def clean(self):
         if self.price or self.discounted_price is not None:
             if self.discounted_price>self.price:
@@ -43,6 +53,11 @@ class Product(models.Model):
     #     super().delete(*args, **kwargs)
     def __str__(self):
         return str(self.name) 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to="products/",default="/products/default/default.png")
+    def __str__(self):
+        return str(self.image)
 class Order(models.Model):
     first_name = models.CharField(max_length=50,default='')
     last_name = models.CharField(max_length=50,default='')
@@ -56,19 +71,7 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100)
     total_price = models.IntegerField(default=0)
-    is_archived = models.BooleanField(default=False)
-    def archive(self):
-        self.is_archived = True
-        self.save()
-    def unarchive(self):
-        self.is_archived = False
-        self.save()        
-    def ret(self):
-        return self.first_name
-    def save(self, *args, **kwargs):
-        print(self.ret())
-
-        super().save(*args, **kwargs)
+    is_archived = models.BooleanField(default=False)      
     # def delete(self, *args, **kwargs):
     #     ProductArchive.objects.create(
     #         first_name = self.first_name,
@@ -110,5 +113,6 @@ class BookRequest(models.Model):
     email = models.CharField(max_length=50,default='')
     phone_no = models.CharField(max_length=50,default='')
     book_name = models.CharField(max_length=50,default='')
+    is_archived = models.BooleanField(default=False)      
     def __str__(self):
         return str(self.first_name)

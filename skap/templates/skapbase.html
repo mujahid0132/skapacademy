@@ -44,7 +44,7 @@
       >
         <div class="flex items-center justify-center h-full w-4/5 lg:w-[57.5%]">
           <svg
-          id="navbtn"
+            id="navbtn"
             class="absolute left-4 text-skapred md:hidden"
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -61,8 +61,16 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
           <a {% if not request.path == home_url %} href="/"{% endif %} 
-            ><img src="{% static 'img/logo.png' %}" alt="logo" class="h-14"
-          /></a>
+          >
+            <img src="{% static 'img/logo.png' %}" alt="logo" class="h-14"/>
+          </a>
+          {% if request.path|slice:"5" == '/shop' %}
+          <button onclick="carttoggle()" class="absolute right-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><div id="cartnumber" class="bg-red-500 w-4 text-xs absolute top-0 right-0 aspect-square rounded-full">0</div></button>{% else %}
+          <a href="/shop" class="absolute right-4">
+            <button onclick="carttoggle()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><div id="cartnumber" class="bg-red-500 w-4 text-xs absolute top-0 right-0 aspect-square rounded-full">0</div></button>
+          </a>
+          
+          {% endif %}
           <nav
           id="nav"
             class="absolute flex items-center justify-end w-full h-full transition-all duration-500 grow md:static -z-30 md:z-auto" 
@@ -114,6 +122,33 @@
       <span class="text-2xl font-bold px-4">About Us</span>
       <span class="text-[0.65rem] font-bold px-4">Home  Services</span>
     </aside>
+    <aside id="cartdiv" class="fixed top-0 z-50 flex w-full justify-end h-full hidden">
+      <div class="grow bg-black bg-opacity-50 h-full" onclick="carttoggle()"></div>
+      <div class="flex flex-col items-center w-80 md:w-96 bg-white h-full">
+        <div class="flex w-full items-center justify-between px-6 py-4 border-b-2"><span class="font-semibold text-xl">Cart</span><button onclick="carttoggle()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+        <button id="clearcartbtn" onclick="clearcart()" class="hidden">clear cart</button>
+      <div id="carthtml" class="p-4 w-full h-full flex items-center grow space-y-3 flex-col py-8 overflow-y-auto">
+        <div class="w-full h-48 flex items-center px-4 space-x-7 border">
+          <img src="/media/products/default/default.png" class="h-4/6" alt="">
+          <div class="flex grow flex-col h-4/6">
+            <span class="font-semibold text-sm uppercase">fasd</span>
+            <span class="text-xs uppercase">fasd</span>
+            <span class="text-xs uppercase my-4">fasd</span>
+            <div class="flex">
+              <button class="flex items-center border-t border-b border-l h-8 w-8 justify-center" onclick="decreasequantity()">-</button>
+              <div class="border-t border-b h-8 w-8 flex items-center justify-center" id="quantity">1</div>
+              <button class="flex items-center border-t border-b border-r h-8 w-8 justify-center" onclick="increasequantity()">+</button>
+            </div>
+          </div>
+        </div>
+          {% comment %} <span id="emptymsg" class="text-xl font-semibold">Your Cart Is Empty</span> {% endcomment %}
+       </div>
+       <form action="/checkout/" id="checkoutform" method="post">
+           {% csrf_token %}
+       </form>
+       <button id="checkoutbtn" class="hidden" onclick="checkout();">checkout</button>
+      </div>
+       </aside>
     {% endif %}
     <main {% if not request.path == home_url %}class="pt-28 md:pt-0"{% endif %}>
       {% block main %}{% endblock main %}
@@ -396,6 +431,8 @@
     </footer>
   </body>
   {% block script %}{% endblock script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src={% static 'js/cart.js' %}></script>
   <script>
     let nav = document.getElementById("nav")
     let navbtn = document.getElementById("navbtn")

@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from .models import *
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
@@ -36,9 +36,9 @@ def become_a_tutor(request):
         new_teacher.cv = cv_path
         new_teacher.latest_certificate_picture = certificate
         new_teacher.save()
-        return render(request, 'base.html')
+        return redirect("/success")
     return render(request,"become_a_tutor.html")
-def want_a_tutor(request):
+def find_a_tutor(request):
     if request.method == 'POST':
         new_student = Student.objects.create(
         name =  request.POST.get('name'),
@@ -50,5 +50,5 @@ def want_a_tutor(request):
         message =  request.POST.get('message'),
         )
         new_student.save()
-        return render(request, 'base.html')
-    return render(request,"want_a_tutor.html")
+        return redirect("/success")
+    return render(request,"find_a_tutor.html")

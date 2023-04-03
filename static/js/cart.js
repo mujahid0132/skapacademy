@@ -4,6 +4,7 @@ let clearcartbtn = document.getElementById("clearcartbtn");
 let checkoutbtn = document.getElementById("checkoutbtn");
 let addtocartbtn = document.getElementById("addtocartbtn");
 let quantitydiv = document.getElementById("quantitydiv");
+let emptymsg = document.getElementById("emptymsg");
 let csrf = document.getElementsByName('csrfmiddlewaretoken');
 let checkoutform = document.getElementsByName('checkoutform');
 
@@ -20,32 +21,40 @@ function cartchanger() {
     let cartnumber = document.getElementById("cartnumber")
     let size = Object.keys(obj).length;
     cartnumber.innerHTML = size
-    carthtml.innerHTML = ""
     if (size === 0) {
-        carthtml.innerHTML = "Your Cart Is Empty"
+        emptymsg.classList.remove("hidden")
     }
     if (size > 0) {
+        carthtml.innerHTML = ""
         clearcartbtn.classList.remove("hidden")
         checkoutbtn.classList.remove("hidden")
     }
     for (let k = 1; k <= size; k++) {
         let box = document.createElement("div")
-        box.classList.add("bg-green-500")
-        box.classList.add("w-4/5")
-        box.classList.add("h-32")
-        let img = document.createElement("img")
-        img.setAttribute('src',obj[Object.keys(obj)[k-1]].img);
-        img.classList.add("w-12")
-        img.classList.add("aspect-square")
-        box.appendChild(img)
-        let quantity = document.createElement("div")
+        // let img = document.createElement("img")
         // img.setAttribute('src',obj[Object.keys(obj)[k-1]].img);
-        quantity.innerHTML = `<button onclick="cartquantitychange(${k},'-')">-</button>
-        <span id="cartquantity${k}">${obj[Object.keys(obj)[k-1]].quantity}</span>
-        <button onclick="cartquantitychange(${k},'+')">+</button>`
+        // let quantity = document.createElement("div")
+        // quantity.innerHTML = `<button onclick="cartquantitychange(${k},'-')">-</button>
+        // <span id="cartquantity${k}">${obj[Object.keys(obj)[k-1]].quantity}</span>
+        // <button onclick="cartquantitychange(${k},'+')">+</button>`
         // img.classList.add("aspect-square")
-        box.appendChild(quantity)
-        carthtml.appendChild(box)
+        // box.appendChild(quantity)
+        box.innerHTML = `
+        <div class="box">
+		<img src="${obj[Object.keys(obj)[k-1]].img}">
+		<div class="details">
+			<span class="title">Title</span>
+			<span class="subtitle">Subtitle</span>
+			<span class="category">Category</span>
+            <div class="quantity">
+                <button onclick="cartquantitychange(${k},'-')">-</button>
+                <div id="cartquantity${k}">${obj[Object.keys(obj)[k-1]].quantity}</div>
+                <button onclick="cartquantitychange(${k},'+')">+</button>
+                </div>
+                </div>
+                </div>
+                `;
+                carthtml.appendChild(box)
     }
 }
 cartchanger()
@@ -75,11 +84,11 @@ function checkout() {
         data: {'products': keysString,
         'csrfmiddlewaretoken':csrf[0].value},
         success: function(html) {
-            var newUrl = "/checkout";
+            var newUrl = "/shop/checkout/";
             window.history.replaceState({}, "", newUrl);
             document.getElementsByTagName("html")[0].innerHTML = html;
             let checkoutscript = document.createElement("script")
-            checkoutscript.setAttribute("src" , "/static/checkout.js")
+            checkoutscript.setAttribute("src" , "/static/js/checkout.js")
             document.body.appendChild(checkoutscript)
         }
     });
@@ -110,10 +119,4 @@ function cartquantitychange(product , operator) {
         
     }
     localStorage.setItem("cart", JSON.stringify(obj));
-}
-function cartdecreasequantity(product) {
-  if (quantity_val > 1) {
-      quantity_val -= 1;
-      quantity.textContent = quantity_val;
-    }
 }

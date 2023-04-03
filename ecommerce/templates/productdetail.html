@@ -1,17 +1,77 @@
 {% extends 'shopbase.html' %} {% load static %} 
 {% block body %} 
-product detail
-<div id="productname">{{product.name}}</div>
-<div id="producttype">{{product.type}}</div>
-<div id="productprice">{{product.price}}</div>
-<div id="productdiscountedprice">{{product.discounted_price}}</div>
-
-<img id="productimg" src="/media/{{product.image}}" alt="" />
-<div id="quantitydiv">
-  <button onclick="decreasequantity()">-</button>
-  <span id="quantity">1</span>
-  <button onclick="increasequantity()">+</button>
+<div class="flex flex-col sm:flex-row md:px-[5%] lg:px-[20%]">
+  <div class="mb-4 sm:mx-5">
+      <div class="flex items-center justify-center py-2 px-8 sm:px-0 m-3 sm:m-0 sm:w-60">
+        <img src="/media/{{product.image}}" id="productimg" alt="" class="w-full" />
+      </div>
+    </div>
+    <div class="mx-6 sm:flex flex-col justify-center">
+      <div id="producttype">{{product.type}}</div>
+      <span class="font-semibold text-xl pb-1"id="productname">{{product.name}}</span>
+      <span class="font-thin text-xs text-gray-400 pb-1">
+        SKU:{{product.sku}}
+      </span>
+      <div>{{ product.description|safe }}</div>
+      <div class="h-0.5 bg-gray-200 mb-4"></div>
+    </div>
 </div>
-<button id="addtocartbtn" onclick="addtocart()">add to cart</button>
-<script src={% static 'productdetail.js' %}></script> 
+<div class="mx-6 flex md:px-[5%] lg:px-[20%] items-center justify-between">
+  <div class="flex flex-col pb-5" id="quantitydiv">
+    <span class="text-xs text-gray-400 py-1 flex items-center justify-center" >QUANTITY</span>
+    <div class="flex">
+      <button class="flex items-center border h-8 w-8 justify-center" onclick="decreasequantity()">-</button>
+      <div class="border h-8 w-8 flex items-center justify-center" id="quantity">1</div>
+      <button class="flex items-center border h-8 w-8 justify-center" onclick="increasequantity()">+</button>
+    </div>
+  </div>
+  <div class="flex items-center justify-center py-6 space-x-2">
+    <span class="font-semibold text-2xl" >Rs. </span>
+    <div class="flex flex-col -space-y-2">
+      <span {% if product.discounted_price %}class="line-through text-xs"{% endif %} id="productprice">{{product.price}}</span>
+    <span class="font-semibold" id="productdiscountedprice">{{product.discounted_price}}</span>
+    </div>
+  </div>
+  <div class="py-6 flex items-center justify-center">
+    <button id="addtocartbtn" onclick="addtocart()" class="bg-skapblue uppercase text-white px-4 py-2 text-sm">
+      ADD TO CART
+    </button>
+  </div>
+</div>
+<div class="h-0.5 bg-gray-200 mb-4 mt-3 mx-6"></div>
+{% comment %} <div class="grid grid-cols-2 gap-3 mb-8 lg:px-[20%] w-fit mx-auto">
+  
+  <div>
+      <div class="bg-gray-200 w-full h-72 px-4 py-2 flex items-center justify-center">
+        <img src="assets/Layer 565 copy.png" alt="" class="h-full" />
+      </div>
+      <span class="text-xs text-center underline py-2">
+        RAIN BROWN BUG
+      </span>
+      <div class="flex justify-center items-center">
+        <span class="font-semibold text-xs pr-2 flex items-center">RS 900</span>
+        <button
+          class="text-white bg-red-800 text-xs w-13 rounded-full py-1 px-2"
+        >
+          ADD TO CART
+        </button>
+      </div>
+    </div><div>
+      <div class="bg-gray-200 w-full h-72 px-4 py-2 flex items-center justify-center">
+        <img src="assets/Layer 565 copy.png" alt="" class="h-full" />
+      </div>
+      <span class="text-xs text-center underline py-2">
+        RAIN BROWN BUG
+      </span>
+      <div class="flex justify-center items-center">
+        <span class="font-semibold text-xs pr-2 flex items-center">RS 900</span>
+        <button
+          class="text-white bg-red-800 text-xs w-13 rounded-full py-1 px-2"
+        >
+          ADD TO CART
+        </button>
+      </div>
+    </div>
+</div> {% endcomment %}
+<script src={% static 'js/productdetail.js' %}></script> 
 {% endblock body %}

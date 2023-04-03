@@ -1,77 +1,199 @@
 {% extends 'shopbase.html' %}
+{% load static tailwind_tags mptt_tags %}
 {% block body %}
-<br>
-<hr>
-filter by
-<hr>
-catagory
-<br>
-<div id="type">
-    {% for pt in productstype %}
-<div ><input id="{{pt}}" name="type" value="{{pt}}" type="checkbox"><label for="{{pt}}">{{pt}}</label></div>
-{% endfor %}
-</div>
-<br>
-<hr>
-sort by
-<hr>
-<div id="sort">
-    <div><input id="l_to_h" name="sort" value="price" type="radio"><label for="l_to_h">price low to high</label></div>
-    <div><input id="h_to_l" name="sort" value="-price" type="radio"><label for="h_to_l">price high to low</label></div>
-    <div><input id="latest" name="sort" value="-id" type="radio"><label for="latest">sort by latest</label></div>
-    <div><input id="popularity" name="sort" value="-popularity" type="radio"><label for="popularity">sort by popularity</label></div>
-</div>
-<button onclick="sorteverything()">sort and filter</button>
-<br>
-all products
-<hr>
-<br>
-{% if products %}
-{% for pr in products %} <a href="/products/{{pr.slug}}">{{pr.name}}</a> {{pr.price}}<br>{% endfor %}{% else %}
-<span>no products to show</span>{% endif %}
-<script>
-    const searchparams = new URLSearchParams();
-</script>
-<script>
-    function sortandfilter(formid) {
-        let formname = document.getElementById(formid)
-        let value = ''
-        for (let k = 0;k<=formname.childElementCount-1;k++) {
-            formname.children[k].children[0].checked? value = value + formname.children[k].children[0].value+"_":undefined
-        }
-        let result = value.slice(0,-1)
-        if (result.length !== 0) {
-        searchparams.set(formname.children[0].children[0].name,result);
-        console.log(searchparams.toString());
-        let currentUrl = new URL(window.location.href);
-        var baseUrl = currentUrl.origin + currentUrl.pathname;
-        console.log(baseUrl);
-        const newUrl = baseUrl + '?' + searchparams.toString();
-            window.location =  newUrl
-        }
-    }
-    function sortedwith(formid) {
-        let urlParams = new URLSearchParams(window.location.search);
-        let values = urlParams.getAll(formid);
-        let formname = document.getElementById(formid)
-        if (values.length === 0) {
-            return 0;
-        }
-        let value = values.pop()
-        let splitedvalues = value.split("_")
-        console.log(splitedvalues);
-        for (let k = 0;k<=formname.childElementCount-1;k++) {
-            if(splitedvalues.includes(formname.children[k].children[0].value))
-            formname.children[k].children[0].checked = 'true'
-        }
-    }
-    function sorteverything() {
-        sortandfilter('type')
-        sortandfilter('sort')
-    }
-    sortedwith('type')
-    sortedwith('sort')
-</script>
-
+<div>
+  <ul>
+      {% recursetree productstype %}
+      <li>
+        <input
+          class="type"
+          type="checkbox"
+          id="{{ node.pk }}"
+          value="{{ node.pk }}"
+          onchange="checkChildren(this)"
+        />
+        <label for="{{ node.pk }}">{{ node.name }}</label>
+        {% if not node.is_leaf_node %}
+        <ul class="px-4">
+          {{ children }}
+        </ul>
+        {% endif %}
+      </li>
+      {% endrecursetree %}
+    </ul>
+    <button onclick="sortandfilter('type')">
+      Filter
+    </button>
+  </div>
+  <div>
+      <input id="l_to_h" class="sort" name="sort" value="price" type="radio" />
+      <label for="l_to_h">price low to high</label>  
+      <br>
+      <input id="h_to_l" class="sort" name="sort" value="-price" type="radio" />
+      <label for="h_to_l">price high to low</label>  
+      <br>
+      <input id="latest" class="sort" name="sort" value="-id" type="radio" />
+      <label for="latest">sort by latest</label>  
+      <br>
+      <input id="popularity" class="sort" name="sort" value="-popularity" type="radio" />
+      <label for="popularity">sort by popularity</label> 
+      <br>
+      <button onclick="sortandfilter('sort')">
+      Sort
+    </button>
+  </div>
+  <div class="md:flex justify-center sm:px-6">
+      <div class="hidden md:block md:bg-white md:mt-10 md:mr-4">
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2 text-lg">Clothes</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2  text-lg">Electronics</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2 text-lg">Shoes</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2  text-lg">Watches</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2  text-lg">Health and Beauty</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2 text-lg">Kids and Babies</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2 text-lg">Sports</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class=" font-semibold px-5 py-2 text-lg">Household</button>
+        </div>
+        <div class=" md:text-center border">
+          <button class="font-semibold px-5 py-2 text-lg">Jewelary</button>
+        </div>
+        <div class="md:border md:mt-4 md:p-3 md:items-center md:justify-center md:flex lg:p-5">
+          <button class="text-white bg-red-800 font-semibold  rounded-full py-2 px-3.5 ">Request a Book</button>
+        </div>
+        <div class="border mt-4 pb-8">
+          <p class="font-semibold text-base p-4 border ">Hot Deals</p>
+          <div class="bg-gray-200 flex items-center justify-center py-2 px-4 m-3 ">
+              <img src="assets/Layer 565 copy.png" alt="" class="w-full">
+          </div>
+          <p class=" text-xs text-center underline py-2">RAIN MOON W</p>
+          <p class="text-sm text-center py-1">RS 100.00</p>
+        </div>
+        <div class="border mt-4 pb-8">
+          <p class="font-semibold text-base p-4 border">Hot Deals</p>
+          <div class="bg-gray-200 flex items-center justify-center py-2 px-4 m-3">
+              <img src="assets/Layer 565 copy.png" alt="" class="w-full">
+          </div>
+          <p class=" text-xs text-center underline py-2">RAIN MOON W</p>
+          <p class="text-sm text-center py-1">RS 100.00</p>
+        </div>
+      </div>
+      <div class="md:mt-10 md:border md:bg-white md:mb-28">
+        <div class="flex justify-between p-4 sm:p-5">
+          <p class="font-bold text-sm sm:text-base  md:text-lg">LATEST BOOKS</p>
+          <ul class="text-xs flex space-x-2 py-1 sm:text-sm sm:space-x-3 md:space-x-2">
+            <li>All</li>
+            <li>Electronics</li>
+            <li>Shoes</li>
+            <li>Clothes</li>
+          </ul>
+        </div>
+        <div class="h-0.5 bg-gray-200 mx-4 mb-4"></div>
+        <div class="mx-6 grid grid-cols-2 sm:grid-cols-3 gap-3 my-8 md:grid-cols-4 md:gap-12 md:mx-4 w">
+          {% if products %} {% for pr in page_obj %}
+          <a href="/shop/products/{{pr.slug}}">
+          <div class="py-4 bg-gray-50 rounded-2xl">
+            <div class=" w-full px-4 py-3 md:px-0 md:py-0">
+              <img src="/media{{pr.image}}" alt="productimg" class="w-full">
+            </div>
+            <p class=" text-xs text-center pt-2 sm:text-sm md:text-xs">{{pr.name}}</p>
+            <p class="font-semibold text-center text-sm  py-2 sm:text-base">RS {{pr.price}}</p>
+            <div class="text-center">
+              <button class="text-white bg-red-800 text-sm font-semibold  rounded-full py-2 px-3 capitalize md:text-xs md:px-2 ">Add To Cart</button>
+            </div>
+          </div>
+        </a>
+          {% endfor %}{% else %} <span>no products to show</span>{% endif %}
+          
+          
+        </div>
+        <div class="flex items-center justify-center my-6  md:hidden">
+          <button class="text-white bg-red-800 text-base w-13 rounded-full py-2 px-4">Request a Book</button>
+        </div>
+      </div>      
+    </div>
   
+  <div class="pagination flex items-center justify-center">
+    <span class="step-links space-x-2">
+      {% if page_obj.has_previous %}
+        <a class="bg-skapred text-white" href="?page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&laquo; first</a>
+        <a class="bg-skapred text-white px-2" href="?page={{ page_obj.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&laquo;</a>
+      {% endif %}
+  
+      <span class="current-page">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+  
+      {% if page_obj.has_next %}
+        <a class="bg-skapred text-white px-2" href="?page={{ page_obj.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&raquo;</a>
+      {% endif %}
+      {% if page_obj.number != page_obj.paginator.num_pages %}
+        <a class="bg-skapred text-white" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">last &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+  
+  
+  
+    <script>
+      function checkChildren(checkbox) {
+        let parent = checkbox.parentNode;
+        let children = parent.getElementsByTagName("input");
+        for (let i = 0; i < children.length; i++) {
+          children[i].checked = checkbox.checked;
+        }
+      }
+      function sortandfilter(operation) {
+        let checkboxes = document.querySelectorAll(
+          `input:checked.${operation}`
+        );
+        let selected = Array.from(checkboxes).map(function (checkbox) {
+            return checkbox.value;
+          });  
+        let parameters = new URLSearchParams(window.location.search);
+        let url = new URL(window.location.href);
+        let currentUrl = url.origin + url.pathname;
+        if (selected.length !== 0) {
+            parameters.set(operation, selected.join("_"));
+        }
+        else{
+          parameters.delete(operation)
+        }
+        const newUrl = `${currentUrl}?${parameters.toString()}`;
+        window.history.replaceState(null, null, newUrl);
+        window.location =  newUrl
+      }
+      function checkticks() {
+          let parameters = new URLSearchParams(window.location.search);
+          for (const paramName of parameters.keys()) {
+              let checkboxes = document.querySelectorAll(
+                `input.${paramName}`
+              );
+              let selected = parameters.getAll(paramName).join().split("_")
+              checkboxes.forEach((element) => {
+                  // console.log(selected);
+                  // console.log(element.value);
+                  if (selected.includes(element.value)) {
+                      console.log(element.checked = true);
+                  }
+              })
+              // checkboxes.checked = true
+          }
+          // console.log(parameters);
+      }
+      checkticks()
+    </script>
 {% endblock body %}

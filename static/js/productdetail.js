@@ -23,7 +23,7 @@ for (k=0;k<Object.keys(cart).length;k++) {
     if (Object.keys(cart)[k] === productname) {
       addtocartbtn.setAttribute('onclick', 'carttoggle()')
       addtocartbtn.innerHTML = "already in cart,view cart"
-      quantitydiv.classList.add("hidden")
+      quantitydiv.classList.add("invisible")
       break;
     }
     else {

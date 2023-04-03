@@ -54,6 +54,9 @@ class BecomeATeacher(models.Model):
     cnic_image = models.ImageField(upload_to="teachers/cnic/",default="/products/default/default.png")
     latest_certificate_picture = models.ImageField(upload_to="teachers/certificates/",default="/products/default/default.png")
     cv = models.FileField(upload_to="techers/cv/",default="/products/default/default.png")
+    is_archived = models.BooleanField(default=False) 
+    class Meta:
+        verbose_name = "Teacher"
     def clean(self):
         if self.educational_background == "other" and self.other_educational_background == "":
             raise ValidationError('You must specify other educational background')
@@ -68,6 +71,7 @@ class Student(models.Model):
     student_grade_or_class = models.CharField(max_length=255,default="")
     message = models.TextField(default="")
     date_of_form_submission = models.DateTimeField(auto_now_add=True)
+    is_archived = models.BooleanField(default=False) 
     def __str__(self):
         return str(self.name)
 

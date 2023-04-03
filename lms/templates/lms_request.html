@@ -1,0 +1,18 @@
+{% extends 'skapbase.html' %}
+{% block main %}
+request lms
+<br>
+<form action="/lms/lms-request/" method="post">
+  {% csrf_token %}
+  <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2" id="">
+  <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
+  <input type="tel" required name="phone_number" placeholder="Phone Number" class="border-2 border-black m-2" id="">
+  <select required name="course_name">
+    {% for course in courses %}
+        <option value="{{course.name}}">{{course.name}}</option>
+    {% endfor %}
+</select>
+  <textarea name="message" placeholder="Message (optional)" class="border-2 border-black m-2" cols="30" rows="10"></textarea>
+  <button type="submit">submit</button>
+</form>
+{% endblock main %}
