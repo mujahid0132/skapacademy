@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import *
 # Create your views here.
-def lsm_request(request):
-    courses = LmsCourse.objects.all()
+def lms_request(request):
+    courses = LmsCourse.objects.filter(is_archived = False)
     context = {
         'courses':courses,
         }
@@ -13,10 +13,10 @@ def lsm_request(request):
         new_lms_request = LmsRequest.objects.create(
         name =  request.POST.get('name'),
         email =  request.POST.get('email'),
-        phone_number =  request.POST.get('phone_number'),
+        phone_number =  request.POST.get('phone_no'),
         course_name =  course,
         message =  request.POST.get('message'),
         )
         new_lms_request.save()
-        return render(request, 'base.html')
+        return redirect("/")
     return render(request,"lms_request.html",context)

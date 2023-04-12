@@ -8,6 +8,7 @@ let productarray = new Array;
 let quantityarray = new Array;
 let prod = document.getElementById("product")
 let quan = document.getElementById("quantity")
+
 function submit() {
   prod.setAttribute("value",productarray)
   quan.setAttribute("value",quantityarray)
@@ -36,7 +37,7 @@ function detailsvalidate() {
       continuebtn.setAttribute("onclick","payment()") 
     }
   }
-  function payment() {
+function payment() {
     prod.setAttribute("value",`[${productarray}]`)
   quan.setAttribute("value",`[${quantityarray}]`)
   console.log(prod);

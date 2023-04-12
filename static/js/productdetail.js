@@ -8,7 +8,6 @@ let quantity_val = 1;
 function increasequantity() {
   quantity_val += 1;
   quantity.textContent = quantity_val;
-  console.log(Object.keys(cart)[0]);
 }
 function decreasequantity() {
   if (quantity_val > 1) {
@@ -16,22 +15,23 @@ function decreasequantity() {
     quantity.textContent = quantity_val;
   }
 }
-
-let cart = JSON.parse(localStorage.getItem("cart"));
-for (k=0;k<Object.keys(cart).length;k++) {
-    console.log(Object.keys(cart)[k]);
-    if (Object.keys(cart)[k] === productname) {
-      addtocartbtn.setAttribute('onclick', 'carttoggle()')
-      addtocartbtn.innerHTML = "already in cart,view cart"
-      quantitydiv.classList.add("invisible")
-      break;
-    }
-    else {
-      addtocartbtn.setAttribute('onclick', 'addtocart()')
-      addtocartbtn.innerHTML = "add to cart"
-    }
-  }
+function buttonchanger() {
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  if (Object.keys(cart).includes(productname)) {
+  console.log(Object.keys(cart));
+  addtocartbtn.setAttribute('onclick', 'carttoggle()')
+  addtocartbtn.innerHTML = "already in cart,view cart"
+  quantitydiv.classList.add("hidden")
+}
+else {
+  addtocartbtn.setAttribute('onclick', 'addtocart()')
+  addtocartbtn.innerHTML = "add to cart"
+  quantitydiv.classList.remove("hidden")
+}
+}
+buttonchanger()
 function addtocart() {
+  let cart = JSON.parse(localStorage.getItem("cart"));
   cart[productname] = { //yahan slug rkhna h,img
     name: productname,
     type: producttype,

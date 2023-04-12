@@ -5,5 +5,6 @@ class Blog(models.Model):
     image = models.ImageField(upload_to="blogs/",default="/blogs/default/default.png")
     description = QuillField()
     is_archived = models.BooleanField(default=False) 
+    date_posted = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return str(self.title) 

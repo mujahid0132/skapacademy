@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+    .cart-item {
+      @apply w-full h-48 flex items-center px-4 space-x-7 border
+    }
+    .cart-item img{
+        @apply h-4/6
+    }
+    .cart-item .details {
+        @apply flex grow flex-col h-4/6
+}
+
+.cart-item .details .name {
+    @apply font-semibold text-sm uppercase text-ellipsis
+}
+
+.cart-item .details .sku {
+    @apply text-xs uppercase
+}
+
+.cart-item .details .price {
+    @apply text-xs uppercase my-6
+}
+.cart-item div .quantity{
+    @apply mr-6
+}
+.cart-item .quantity button {
+  @apply flex items-center border h-8 w-8 justify-center
+}
+
+.cart-item .quantity button:hover {
+  cursor: pointer;
+}
+
+.cart-item .quantity div {
+    @apply border h-8 w-8 flex items-center justify-center
+}
+  }

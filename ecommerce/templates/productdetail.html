@@ -1,19 +1,23 @@
 {% extends 'shopbase.html' %} {% load static %} 
 {% block body %} 
-<div class="flex flex-col sm:flex-row md:px-[5%] lg:px-[20%]">
-  <div class="mb-4 sm:mx-5">
-      <div class="flex items-center justify-center py-2 px-8 sm:px-0 m-3 sm:m-0 sm:w-60">
-        <img src="/media/{{product.image}}" id="productimg" alt="" class="w-full" />
+<div class="flex flex-col items-center justify-center sm:flex-row px-[5%] lg:px-[20%] py-4">
+        <div class="w-full">
+          <img src="/media/{{product.image}}" id="productimg" alt="" class="h-96 object-contain object-center w-full" />
+        </div>
+      <div class="py-6 sm:flex flex-col justify-center w-full sm:w-[65%] h-full">
+        <div id="producttype"><span class="font-thin text-sm">{{product.type}}</span></div>
+        <span class="font-semibold leading-4 text-xl block"id="productname">{{product.name}}</span>
+        <span class="font-thin text-xs text-gray-400 pb-1">
+          SKU:{{product.sku}}
+        </span>
+        <div class="h-0.5 bg-gray-200 mb-4"></div>
+        <span class="font-semibold text-xl pb-1">Description</span>
+        <div 
+        style="overflow-wrap: break-word;" 
+        class="max-h-60 overflow-y-auto"
+      >
+        {{product.description.html|safe}}
       </div>
-    </div>
-    <div class="mx-6 sm:flex flex-col justify-center">
-      <div id="producttype">{{product.type}}</div>
-      <span class="font-semibold text-xl pb-1"id="productname">{{product.name}}</span>
-      <span class="font-thin text-xs text-gray-400 pb-1">
-        SKU:{{product.sku}}
-      </span>
-      <div>{{ product.description|safe }}</div>
-      <div class="h-0.5 bg-gray-200 mb-4"></div>
     </div>
 </div>
 <div class="mx-6 flex md:px-[5%] lg:px-[20%] items-center justify-between">

@@ -39,18 +39,6 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         self.slug = self.name.replace(" ", "-")
         super().save(*args, **kwargs)
-    # def delete(self, *args, **kwargs):
-    #     ProductArchive.objects.create(
-    #         name = self.name,
-    #         image = self.image,
-    #         description = self.description,
-    #         type = self.type,
-    #         price = self.price,
-    #         discounted_price = self.discounted_price,
-    #         slug = self.slug,
-    #         popularity = self.popularity
-    #         )
-    #     super().delete(*args, **kwargs)
     def __str__(self):
         return str(self.name) 
 class ProductImage(models.Model):
@@ -71,22 +59,7 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100)
     total_price = models.IntegerField(default=0)
-    is_archived = models.BooleanField(default=False)      
-    # def delete(self, *args, **kwargs):
-    #     ProductArchive.objects.create(
-    #         first_name = self.first_name,
-    #         last_name = self.last_name,
-    #         email_or_phone_no = self.email_or_phone_no,
-    #         address = self.address,
-    #         city = self.city,
-    #         country = self.country,
-    #         postal_code = self.postal_code,
-    #         date_ordered = self.date_ordered,
-    #         complete = self.complete,
-    #         transaction_id = self.transaction_id,
-    #         total_price = self.total_price,
-    #         )
-    #     super().delete(*args, **kwargs)
+    is_archived = models.BooleanField(default=False)
     def __str__(self):
         return str(self.first_name)
 

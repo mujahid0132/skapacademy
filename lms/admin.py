@@ -11,6 +11,8 @@ class LmsCourseAdmin(admin.ModelAdmin):
     delete_selected = delete_selected
     unarchive = unarchive
 class LmsRequestAdmin(AddButtonInAdmin):
+    list_filter = ("date_requested",)
+    date_hierarchy = "date_requested"
     actions = ['delete_selected','unarchive']
     get_actions = get_actions
     get_queryset = get_queryset

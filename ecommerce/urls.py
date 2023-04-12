@@ -8,5 +8,4 @@ urlpatterns = [
     path('complete/', views.complete_order),
     path('test/', views.test),
     path('request-a-book/', views.request_a_book),
-    # path('testees/', views.generate_pdf),
 ]

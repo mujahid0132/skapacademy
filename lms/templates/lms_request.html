@@ -2,17 +2,88 @@
 {% block main %}
 request lms
 <br>
-<form action="/lms/lms-request/" method="post">
+<form action="/lms/lms-request/" name="lms_request" method="post">
   {% csrf_token %}
-  <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2" id="">
-  <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
-  <input type="tel" required name="phone_number" placeholder="Phone Number" class="border-2 border-black m-2" id="">
+<div class="flex flex-col w-96">    
+  <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2 w-96" id="">
+  <span class="text-sm text-red-500"></span>
+  </div>
+<div class="flex flex-col">
+  <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2 w-96" id="">
+  <span class="text-sm text-red-500"></span>
+  </div>
+<div class="flex flex-col">
+  <input type="tel" required name="phone_no" placeholder="Phone Number" class="border-2 border-black m-2 w-96" id="phone_no">
+  <span class="text-sm text-red-500"></span>
+  </div>
+  <span>select course you want to study:</span>
   <select required name="course_name">
+    <!-- <option hidden selected disabled value="">--select a course--</option> -->
     {% for course in courses %}
-        <option value="{{course.name}}">{{course.name}}</option>
+    <option value="{{course.name}}">{{course.name}}</option>
     {% endfor %}
-</select>
-  <textarea name="message" placeholder="Message (optional)" class="border-2 border-black m-2" cols="30" rows="10"></textarea>
-  <button type="submit">submit</button>
+  </select>
+  <div class="flex flex-col">
+    <textarea name="message" placeholder="Message (optional)" class="border-2 border-black m-2 w-96" cols="30" rows="10"></textarea>
+    <span class="text-sm text-red-500"></span>
+    </div>
+  
+  <button type="submit" id="lrsb">submit</button>
 </form>
 {% endblock main %}
+{% block script %}
+<script>
+  
+    var cleave = new Cleave("#phone_no", {
+    blocks: [4, 7],
+    numericOnly: true,
+  });
+    const form = document.forms.lms_request;
+    const nameInput = form.elements.name;
+    const emailInput = form.elements.email;
+    const phoneNoInput = form.elements.phone_no;
+    const message = form.elements.message;
+    const lrsb = document.getElementById("lrsb")
+    const phoneNoRegex = /^03[0-9]{2} [0-9]{7,11}$/;
+    form.addEventListener('submit', validate);
+    lrsb.addEventListener('click', validate);
+    function validate(event) {
+      event.preventDefault();
+      resetErrors();
+      let valid = true
+      console.log(emailInput.checkValidity());
+      if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+        setError(emailInput, 'Please enter a valid email address');
+        valid = false
+      }
+      if (!phoneNoRegex.test(phoneNoInput.value.trim())) {
+        setError(phoneNoInput, 'Please enter a valid Pakistani phone number');
+        valid = false
+      }
+      if (!nameInput.value.trim()) {
+        setError(nameInput, 'Name is required');
+        valid = false
+        if (!message.value.trim()) {
+        setError(message, 'Message is required');
+        valid = false
+      }
+      }
+      if(valid){form.submit();}
+      
+    }
+    
+    function setError(input, message) {
+      input.classList.add('border-red-500');
+      const errorMessage = input.nextElementSibling;
+      errorMessage.textContent = message;
+    }
+    
+    function resetErrors() {
+      const errorMessages = form.querySelectorAll('.text-sm.text-red-500');
+      errorMessages.forEach((message) => (message.textContent = ''));
+    
+      const inputs = form.querySelectorAll('input,textarea');
+      inputs.forEach((input) => input.classList.remove('border-red-500'));
+    }
+</script>
+{% endblock script %}

@@ -18,7 +18,7 @@ def blog(request):
 @staff_member_required
 def showdates(request,db_table):
     table = db_table_seperator(db_table)
-    dates = table[1].objects.dates(table[2],'day')
+    dates = table[1].objects.dates(table[2],'day').filter(is_archived = False)
     print(dates)
     context = {
         'dates':dates,
@@ -28,7 +28,7 @@ def showdates(request,db_table):
 @staff_member_required
 def detail(request,db_table,date):
     table = db_table_seperator(db_table)
-    objects = table[1].objects.filter(**{f'{table[2]}__date': date})
+    objects = table[1].objects.filter(**{f'{table[2]}__date': date,'is_archived': False})
     context = {
         'objects':objects,
         }

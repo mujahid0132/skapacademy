@@ -1,19 +1,136 @@
-{% extends 'shopbase.html' %}
-{% block body %}
-<form action="/shop/request-a-book/" method="post">
-    <span>contact information</span><br>
-    {% csrf_token %}
-    <input type="text" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
-    <input type="text" required name="phone_no" placeholder="Mobile No." class="border-2 border-black m-2" id="">
+{% extends 'shopbase.html' %} {% block body %}
+<form name="request_a_book" action="/shop/request-a-book/" method="post">
+  <span>contact information</span><br />
+  {% csrf_token %}
+  <div class="flex flex-col ">
+    <input
+    type="email"
+    required
+    name="email"
+    placeholder="Email"
+    class="border-2 border-black m-2 w-96"
+    id=""
+  />
+  <span class="text-sm text-red-500"></span>
+  </div>
+  <div class="flex flex-col ">
+  <input
+    type="tel"
+    required
+    name="phone_no"
+    placeholder="Mobile No."
+    class="border-2 border-black m-2 w-96"
+    id="phone_no"
+    maxlength="12"
+    />
     <span class="text-sm text-red-500"></span>
-    <input type="text" required name="first_name" placeholder="Firstname" class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span><br>
-    <input type="text" required name="last_name" placeholder="Lastname" class="border-2 border-black m-2" id="">
+  </div>
+  <div class="flex flex-col ">
+  <input
+    type="text"
+    required
+    name="first_name"
+    placeholder="Firstname"
+    class="border-2 border-black m-2 w-96 alpha"
+    id=""
+    />
     <span class="text-sm text-red-500"></span>
-    <input type="text" required name="book_name" placeholder="Book Name" class="border-2 border-black m-2" id="">
-    <button type="submit">submit</button>
+  </div>
+  <div class="flex flex-col ">
+  <input
+    type="text"
+    required
+    name="last_name"
+    placeholder="Lastname"
+    class="border-2 border-black m-2 w-96 alpha"
+    id=""
+    />
+    <span class="text-sm text-red-500"></span>
+  </div>
+  <div class="flex flex-col ">
+  <input
+    type="text"
+    required
+    name="book_name"
+    placeholder="Book Name"
+    class="border-2 border-black m-2 w-96"
+    id=""
+    />
+    <span class="text-sm text-red-500"></span>
+  </div>
+  <button id="brsb" type="submit">submit</button>
 </form>
+{% endblock body %} {% block script %}
 <script>
-    
+  var cleave = new Cleave("#phone_no", {
+    blocks: [4, 7],
+    numericOnly: true,
+  });
+  const form = document.forms.request_a_book;
+const emailInput = form.elements.email;
+const phoneNoInput = form.elements.phone_no;
+const firstNameInput = form.elements.first_name;
+const lastNameInput = form.elements.last_name;
+const bookNameInput = form.elements.book_name;
+const brsb = document.getElementById("brsb")
+
+const phoneNoRegex = /^03[0-9]{2} [0-9]{7,11}$/;
+
+form.addEventListener('submit', validate);
+brsb.addEventListener('click', validate);
+function validate(event) {
+  event.preventDefault();
+
+  // Reset all error messages and borders
+  resetErrors();
+  let valid = true
+  // Validate email
+  if (!emailInput.value.trim()) {
+    setError(emailInput, 'Please enter a valid email address');
+    valid = false
+  }
+
+  // Validate phone number
+  if (!phoneNoRegex.test(phoneNoInput.value.trim())) {
+    setError(phoneNoInput, 'Please enter a valid Pakistani phone number');
+    valid = false
+  }
+
+  // Validate first name
+  if (!firstNameInput.value.trim()) {
+    setError(firstNameInput, 'First name is required');
+    valid = false
+  }
+
+  // Validate last name
+  if (!lastNameInput.value.trim()) {
+    setError(lastNameInput, 'Last name is required');
+    valid = false
+  }
+
+  // Validate book name
+  if (!bookNameInput.value.trim()) {
+    setError(bookNameInput, 'Book name is required');
+    valid = false
+  }
+
+  if(valid){form.submit();}
+  
+}
+
+function setError(input, message) {
+  input.classList.add('border-red-500');
+  const errorMessage = input.nextElementSibling;
+  errorMessage.textContent = message;
+}
+
+function resetErrors() {
+  const errorMessages = form.querySelectorAll('.text-sm.text-red-500');
+  errorMessages.forEach((message) => (message.textContent = ''));
+
+  const inputs = form.querySelectorAll('input');
+  inputs.forEach((input) => input.classList.remove('border-red-500'));
+}
 </script>
-{% endblock body %}
+
+{% endblock script %}
