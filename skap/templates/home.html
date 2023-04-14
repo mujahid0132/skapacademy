@@ -263,11 +263,12 @@
           dashboard that empower students to study at any location in the
           world.
         </span>
-        <button
+        <a 
+          href="/registration/find-a-tutor/"
           class="bg-skapred text-white rounded-xl text-sm px-9 mt-10 py-1"
         >
           Join Now
-        </button>
+        </a>
       </div>
       <div class="w-2/4 flex items-center justify-center h-full mt-8 md:mt-0">
         <div
@@ -478,7 +479,7 @@
       ></iframe>
     </div>
 </section>
-<section class="bg-skapred h-[480px] flex items-center justify-center">
+<section class="bg-skapred text-white flex items-center justify-center flex-col">
   <div class="flex flex-col items-center w-4/5 h-full py-12 text-white">
     <span class="text-2xl font-semibold">Our Book Shop</span>
     <span class="lg:w-3/5 my-1 sm:my-3 leading-4 text-center"
@@ -487,6 +488,26 @@
       ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
       accumsan lacus vel facilisis.
     </span>
+  </div>
+  <div class="mx-6 grid overflow-x-scroll gap-2 my-8 grid-cols-5 md:gap-5 md:mx-4 place-content-center">
+    {% for pr in products %}
+    <a href="/shop/products/{{pr.slug}}">
+    <div class="py-4 px-2 border rounded-2xl flex items-center justify-center flex-col">
+        <img src="/media/{{pr.image}}" alt="productimg" class="h-48 sm:h-60 w-full rounded-md object-contain object-center">
+      <p class="text-center text-xs sm:text-base pt-2">{{pr.name}}</p>
+      <div class="flex items-center justify-center pt-2 space-x-2">
+        <span class="font-semibold text-xl" >Rs. </span>
+        <div class="flex flex-col -space-y-2">
+          <span {% if pr.discounted_price %}class="line-through text-xs"{% endif %} id="productprice">{{pr.price}}</span>
+        <span class="font-semibold text-sm" id="productdiscountedprice">{{pr.discounted_price}}</span>
+        </div>
+      </div>
+      <div class="text-center">
+        {% comment %} <button class="text-white bg-red-800 text-sm font-semibold  rounded-full py-2 px-3 capitalize md:text-xs md:px-2 ">Add To Cart</button> {% endcomment %}
+      </div>
+    </div>
+  </a>
+    {% endfor %}
   </div>
 </section>
 <section
@@ -550,11 +571,12 @@
         </div>
       </div>
     </div>
-    <button
+    <a
+      href="/registration/become-a-tutor/"
       class="bg-skapred text-white rounded-xl text-sm px-9 mt-10 py-2"
     >
       Join Now
-    </button>
+    </a>
   </div>
   <div
     class="items-center justify-center xl:justify-end hidden h-full mb-1 grow md:flex w-2/4 "
@@ -626,11 +648,12 @@
         </div>
       </div>
     </div>
-    <button
+    <a
       class="bg-skapred text-white rounded-xl text-sm px-9 mt-10 py-2"
+      href="/registration/find-a-tutor/"
     >
       Join Now
-    </button>
+    </a>
   </div>
   </div>
 </section>
