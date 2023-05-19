@@ -13,8 +13,31 @@ SECRET_KEY = 'django-insecure-%)ms04w-mz$=1lxj78voewsudhuj&2l)9aet25xc-je$s2_42u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['skapacademy.pk']
 
+QUILL_CONFIGS = {
+    'default':{
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+    ['bold', 'italic', 'underline', 'strike'],        
+    ['blockquote', 'code-block'],
+    [{'header': 1}, {'header': 2}],               
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    [{'script': 'sub'}, {'script': 'super'}],      
+    [{'indent': '-1'}, {'indent': '+1'}],          
+    [{'direction': 'rtl'}],                        
+    [{'size': ['small', False, 'large', 'huge']}],  
+    [{'header': [1, 2, 3, 4, 5, 6, False]}],
+    [{'color': []}, {'background': []}],           
+    [{'font': []}],
+    [{'align': []}],
+    ['clean'],                                     
+  ],
+        }
+    }
+}
 
 # Application definition
 
