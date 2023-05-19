@@ -90,7 +90,7 @@
           {% if page_obj.0 %}
           {% for pr in page_obj %}
           <a href="/shop/products/{{pr.slug}}">
-          <div class="py-4 px-2 border rounded-2xl flex items-center justify-center flex-col">
+          <div class="py-4 px-2 rounded-2xl flex items-center justify-center flex-col">
               <img src="/media/{{pr.image}}" alt="productimg" class="h-48 sm:h-60 w-full rounded-md object-contain object-center">
             <p class="text-center text-xs sm:text-base pt-2">{{pr.name}}</p>
             <div class="flex items-center justify-center pt-2 space-x-2">

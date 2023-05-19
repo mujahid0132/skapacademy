@@ -1,17 +1,114 @@
 {% extends 'skapbase.html' %}
 {% block main %}
-want a tutor
-<br>
-<form action="/registration/find-a-tutor/" method="post">
+<div class="w-[80vw] mx-auto pt-5 flex flex-col space-y-3 items-center justify-between">
+  <div class="py-4">
+    <span class="text-3xl font-semibold flex items-center justify-center">Find a tutor</span>
+    <div class="text-sm text-center">Please fill in the information below</div>
+  </div>
+<form name="find_a_tutor" class="pb-6" action="/registration/find-a-tutor/" method="post">
   {% csrf_token %}
-  <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2" id="">
-  <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
-  <input type="text" required name="subjects_to_study" placeholder="Subjects To Study" class="border-2 border-black m-2" id="">
-  <input type="tel" required name="phone_number" placeholder="Phone Number" class="border-2 border-black m-2" id="">
-  <input type="tel" required name="whatsapp_number" placeholder="WhatsApp Number" class="border-2 border-black m-2" id="">
-  <input type="text" required name="student_grade_or_class" placeholder="Student's Grade Or Class" class="border-2 border-black m-2" id="">
-  <textarea name="message" placeholder="Message (optional)" class="border-2 border-black m-2" cols="30" rows="10"></textarea>
-  <button type="submit">submit</button>
+  <div class="flex flex-col w-full sm:w-96 my-2"> 
+    <label for="name" class="block text-sm font-semibold px-2">Name:</label>
+  <input type="text" required id="name" name="name" placeholder="Name" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" id="">
+  <span class="text-sm text-red-500"></span>
+  </div>
+  <div class="flex flex-col w-full sm:w-96 my-2"> 
+  <label for="email" class="block text-sm font-semibold px-2">Email:</label>
+  <input type="email" id="email" required name="email" placeholder="Email" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" id="">
+  <span class="text-sm text-red-500"></span>
+</div>
+<div class="flex flex-col w-full sm:w-96 my-2"> 
+    <label for="subjects_to_study" class="block text-sm font-semibold px-2">Subjects To Study:</label>
+    <input type="text" required name="subjects_to_study" id="subjects_to_study" placeholder="Subjects To Study(seperated by comma)" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" id="">
+    <span class="text-sm text-red-500"></span>
+  </div>
+  <div class="flex flex-col w-full sm:w-96 my-2"> 
+    <label for="phone_number" class="block text-sm font-semibold px-2">Phone Number:</label>
+    <input type="tel" required name="phone_number" id="phone_number" placeholder="Phone Number" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" id="">
+    <span class="text-sm text-red-500"></span>
+  </div>
+  <div class="flex flex-col w-full sm:w-96 my-2"> 
+    <label for="whatsapp_number" class="block text-sm font-semibold px-2">WhatsApp Number:</label>
+    <input type="tel" required id="whatsapp_number" name="whatsapp_number" placeholder="WhatsApp Number" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" id="">
+    <span class="text-sm text-red-500"></span>
+  </div>
+  <div class="flex flex-col w-full sm:w-96 my-2"> 
+    <label for="student_grade_or_class" class="block text-sm font-semibold px-2">Student's Grade Or Class:</label>
+    <input type="text" required id="student_grade_or_class" name="student_grade_or_class" placeholder="Student's Grade Or Class" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" id="">
+    <span class="text-sm text-red-500"></span>
+  </div>
+  <label for="message" class="block text-sm font-semibold px-2">Message:</label>
+  <textarea name="message" id="message" placeholder="Message (optional)" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" cols="30" rows="10"></textarea>
+  <button id="ftsb" class="my-2 block btn relative z-40 text-white bg-skapblue border-2 border-gray-200 m-auto w-full sm:w-96 h-10" type="submit">Submit</button>
 </form>
-
+</div>
 {% endblock main %}
+{% block script %}
+<script>
+    var cleave = new Cleave("#phone_number", {
+    blocks: [4, 7],
+    numericOnly: true,
+  });
+    var cleave2 = new Cleave("#whatsapp_number", {
+    blocks: [4, 7],
+    numericOnly: true,
+  });
+    const form = document.forms.find_a_tutor;
+    const nameInput = form.elements.name;
+    const emailInput = form.elements.email;
+    const phoneNoInput = form.elements.phone_number;
+    const whatsappNumberInput = form.elements.whatsapp_number;
+    const subjectsToStudyInput = form.elements.subjects_to_study;
+    const studentGradeOrClassInput = form.elements.student_grade_or_class;
+    const ftsb = document.getElementById("ftsb")
+    const phoneNoRegex = /^03[0-9]{2} [0-9]{7,11}$/;
+    form.addEventListener('submit', validate);
+    ftsb.addEventListener('click', validate);
+    function validate(event) {
+      event.preventDefault();
+      resetErrors();
+      let valid = true
+      console.log(emailInput.checkValidity());
+      if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+        setError(emailInput, 'Please enter a valid email address');
+        valid = false
+      }
+      if (!phoneNoRegex.test(phoneNoInput.value.trim())) {
+        setError(phoneNoInput, 'Please enter a valid Pakistani phone number');
+        valid = false
+      }
+      if (!phoneNoRegex.test(whatsappNumberInput.value.trim())) {
+        setError(whatsappNumberInput, 'Please enter a valid Pakistani phone number');
+        valid = false
+      }
+      if (!nameInput.value.trim()) {
+        setError(nameInput, 'Name is required');
+        valid = false
+      }
+      if (!subjectsToStudyInput.value.trim()) {
+        setError(subjectsToStudyInput, 'Subjects To Study are required');
+        valid = false
+      }
+      if (!studentGradeOrClassInput.value.trim()) {
+        setError(studentGradeOrClassInput, 'Student Grade or Class is required');
+        valid = false
+      }
+      if(valid){form.submit();}
+      
+    }
+    
+    function setError(input, message) {
+      input.classList.add('border-red-500');
+      const errorMessage = input.nextElementSibling;
+      errorMessage.textContent = message;
+    }
+    
+    function resetErrors() {
+      const errorMessages = form.querySelectorAll('.text-sm.text-red-500');
+      errorMessages.forEach((message) => (message.textContent = ''));
+    
+      const inputs = form.querySelectorAll('input,textarea');
+      inputs.forEach((input) => input.classList.remove('border-red-500'));
+    }
+</script>
+{% endblock script %}

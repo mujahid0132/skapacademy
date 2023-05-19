@@ -18,7 +18,6 @@ function decreasequantity() {
 function buttonchanger() {
   let cart = JSON.parse(localStorage.getItem("cart"));
   if (Object.keys(cart).includes(productname)) {
-  console.log(Object.keys(cart));
   addtocartbtn.setAttribute('onclick', 'carttoggle()')
   addtocartbtn.innerHTML = "already in cart,view cart"
   quantitydiv.classList.add("hidden")

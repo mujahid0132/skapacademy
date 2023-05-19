@@ -1,61 +1,334 @@
-{% extends 'skapbase.html' %}
-{% block main %}
-  becomme a tutor
-  <br>
-  <form action="/registration/become-a-tutor/" enctype="multipart/form-data" method="post">
-      {% csrf_token %}
-      <input type="text" required name="name" placeholder="Name" class="border-2 border-black m-2" id="">
-      <input type="email" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
-      <select required name="gender">
-          <option value="male" selected>Male</option>
-          <option value="female">Female</option>
-        </select>
-        <span>D.O.B.</span>
-      <input type="date" required name="date_of_birth"class="border-2 border-black m-2" id="">
-      
-      <input type="tel" required name="phone_number" placeholder="Phone Number" class="border-2 border-black m-2" id="">
-      <input type="tel" required name="whatsapp_number" placeholder="WhatsApp Number" class="border-2 border-black m-2" id="">
-      <input type="text" required name="years_of_experience" placeholder="Years Of Experience" class="border-2 border-black m-2" id="">
-      <input type="text" required name="highest_qualification_and_institute" placeholder="Highest Qualification And Institute" class="border-2 border-black m-2" id="">
-      <select required name="educational_background" id="educational_background" onchange="edu_bg()">
-          <option value="olevel_igcse_alevel" selected>O level, IGCSE/ A level</option>
-          <option value="matric_fsc">Matric / FSc</option>
-          <option value="other">Other</option>
+{% extends 'skapbase.html' %} {% block main %}
+<div
+  class="w-[80vw] mx-auto pt-5 flex flex-col space-y-3 items-center justify-between"
+>
+  <div class="py-4">
+    <span class="text-3xl font-semibold flex items-center justify-center"
+      >Become a tutor</span
+    >
+    <div class="text-sm text-center">Please fill in the information below</div>
+  </div>
+  <form
+    name="become_a_tutor"
+    class="pb-6"
+    action="/registration/become-a-tutor/"
+    enctype="multipart/form-data"
+    method="post"
+  >
+    {% csrf_token %}
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="name" class="block text-sm font-semibold px-2">Name:</label
+      ><input
+        type="text"
+        required
+        name="name"
+        id="name"
+        placeholder="Name"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="email" class="block text-sm font-semibold px-2">Email:</label
+      ><input
+        type="email"
+        required
+        name="email"
+        id="email"
+        placeholder="Email"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="gender" class="block text-sm font-semibold px-2">Gender:</label>
+      <select
+        required
+        name="gender"
+        id="gender"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      >
+        <option value="male" selected>Male</option>
+        <option value="female">Female</option>
       </select>
-      <input type="text" id="other_educational_background" name="other_educational_background" placeholder="Specify Other Educational Background" class="border-2 border-black m-2 hidden" id="">
-      <input type="text" required name="can_teach_classes" placeholder="Classes you can teach" class="border-2 border-black m-2" id="">
-      <input type="text" required name="can_teach_subjects" placeholder="Subjects you can teach" class="border-2 border-black m-2" id="">
-      <input type="text" required name="can_teach_in_areas" placeholder="In which areas you can teach" class="border-2 border-black m-2" id="">
-      <label >Can you teach on online platforms</label>
-      <label for="yes">Yes</label>
-      <input type="radio" required value="yes" name="can_teach_on_online_platforms" class="border-2 border-black m-2" id="yes">
-      <label for="no">No</label>
-      <input type="radio" required value="no" name="can_teach_on_online_platforms" class="border-2 border-black m-2" id="no">
-      <br>
-      <textarea name="message_or_objective" placeholder="Message Or Objective" class="border-2 border-black m-2" cols="30" rows="10"></textarea>
-      <label>CNIC</label>
-      <input type="file" name="cnic_image" required />
-      <input type="file" name="latest_certificate_picture" required />
-      <input type="file" name="cv" required />
-      <button type="submit">submit</button>
-  </form>
-  <script>
-      let educational_background = document.getElementById("educational_background");
-      let other_educational_background = document.getElementById("other_educational_background");
-      function edu_bg() {
-        var selectedOption = educational_background.options[educational_background.selectedIndex].value;
-        if (selectedOption === "other"){
-          other_educational_background.classList.remove("hidden")
-          other_educational_background.setAttribute("required","true")
-        }else{
-          other_educational_background.classList.add("hidden")
-          other_educational_background.removeAttribute("required")
+      <span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="date_of_birth" class="block text-sm font-semibold px-2">Date Of Birth:</label
+      ><input
+        type="date"
+        required
+        name="date_of_birth"
+        id="date_of_birth"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
 
-        }
-      }
-      edu_bg()
-  </script>
-  <!-- cnic_image = models.ImageField(upload_to="teachers/cnic/")
-  latest_certificate_picture = models.ImageField(upload_to="teachers/certificates/")
-  cv = models.FileField(upload_to="techers/cv/") -->
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="phone_number" class="block text-sm font-semibold px-2">Phone Number:</label
+      ><input
+        type="tel"
+        required
+        name="phone_number"
+        id="phone_number"
+        placeholder="Phone Number"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="whatsapp_number" class="block text-sm font-semibold px-2">WhatsApp Number:</label
+      ><input
+        type="tel"
+        required
+        name="whatsapp_number"
+        id="whatsapp_number"
+        placeholder="WhatsApp Number"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="years_of_experience" class="block text-sm font-semibold px-2">Years Of Experience:</label
+      ><input
+        type="text"
+        required
+        name="years_of_experience"
+        id="years_of_experience"
+        placeholder="Years Of Experience"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="highest_qualification_and_institute" class="block text-sm font-semibold px-2">Highest Qualification And Institute:</label
+      ><input
+        type="text"
+        required
+        name="highest_qualification_and_institute"
+        id="highest_qualification_and_institute"
+        placeholder="Highest Qualification And Institute"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="educational_background" class="block text-sm font-semibold px-2">Educational Background:</label>
+      <select
+        required
+        name="educational_background"
+        id="educational_background"
+        id="educational_background"
+        onchange="edu_bg()"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      >
+        <option value="olevel_igcse_alevel" selected>
+          O level, IGCSE/ A level
+        </option>
+        <option value="matric_fsc">Matric / FSc</option>
+        <option value="other">Other</option>
+      </select>
+      <span class="text-sm text-red-500"></span>
+    </div>
+    <div
+      id="other_educational_background_div"
+      class="flex flex-col w-full sm:w-96 my-2"
+    >
+      <label for="other_educational_background" class="block text-sm font-semibold px-2">Specify Other Educational Background:</label
+      ><input
+        type="text"
+        id="other_educational_background"
+        name="other_educational_background"
+        id="other_educational_background"
+        placeholder="Specify Other Educational Background"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="can_teach_classes" class="block text-sm font-semibold px-2">Classes you can teach:</label
+      ><input
+        type="text"
+        required
+        name="can_teach_classes"
+        id="can_teach_classes"
+        placeholder="Classes you can teach"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="can_teach_subjects" class="block text-sm font-semibold px-2">Subjects you can teach:</label
+      ><input
+        type="text"
+        required
+        name="can_teach_subjects"
+        id="can_teach_subjects"
+        placeholder="Subjects you can teach"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="can_teach_in_areas" class="block text-sm font-semibold px-2">In which areas you can teach:</label
+      ><input
+        type="text"
+        required
+        name="can_teach_in_areas"
+        id="can_teach_in_areas"
+        placeholder="In which areas you can teach"
+        class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      /><span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="name" class="block text-sm font-semibold px-2"
+        >Can you teach on online platforms:</label
+      >
+      <div class="flex items-center mx-auto w-2/4 justify-between">
+        <div>
+          <label for="yes">Yes</label>
+          <input
+            type="radio"
+            required
+            value="yes"
+            name="can_teach_on_online_platforms"
+            id="can_teach_on_online_platforms"
+            class="border-2 border-black m-2"
+            id="yes"
+          />
+        </div>
+        <div>
+          <label for="no">No</label>
+          <input
+            type="radio"
+            required
+            value="no"
+            name="can_teach_on_online_platforms"
+            id="can_teach_on_online_platforms"
+            class="border-2 border-black m-2"
+            id="no"
+          />
+        </div>
+
+        <span class="text-sm text-red-500"></span>
+      </div>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="name" class="block text-sm font-semibold px-2"
+        >Cover Letter:</label
+      >
+    <textarea
+      name="message_or_objective"
+      id="message_or_objective"
+      placeholder="Cover Letter"
+      class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+      cols="30"
+      rows="10"
+    ></textarea>
+    <span class="text-sm text-red-500"></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="cnic_image" class="block text-sm font-semibold px-2">CNIC:</label
+      ><input type="file" name="cnic_image" id="cnic_image" required class="appearance-none bg-gray-100 py-2 px-4 rounded-md"/><span
+        class="text-sm text-red-500"
+      ></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="latest_certificate_picture" class="block text-sm font-semibold px-2">Latest Certificate Picture:</label
+      ><input type="file" name="latest_certificate_picture" id="latest_certificate_picture" required class="appearance-none bg-gray-100 py-2 px-4 rounded-md"/><span
+        class="text-sm text-red-500"
+      ></span>
+    </div>
+    <div class="flex flex-col w-full sm:w-96 my-2">
+      <label for="cv" class="block text-sm font-semibold px-2">CV:</label
+      ><input type="file" name="cv" id="cv" required class="appearance-none bg-gray-100 py-2 px-4 rounded-md" />
+      <span
+        class="text-sm text-red-500"
+      ></span>
+    </div>
+    <button id="ftsb" type="submit" class="my-2 block btn relative z-40 text-white bg-skapblue border-2 border-gray-200 m-auto w-full sm:w-96 h-10">submit</button>
+  </form>
+</div>
+
 {% endblock main %}
+{% block script %}
+<script>
+  let educational_background = document.getElementById(
+    "educational_background"
+  );
+  let other_educational_background = document.getElementById(
+    "other_educational_background_div"
+  );
+  function edu_bg() {
+    var selectedOption =
+      educational_background.options[educational_background.selectedIndex]
+        .value;
+    if (selectedOption === "other") {
+      other_educational_background.classList.remove("hidden");
+      other_educational_background.setAttribute("required", "true");
+    } else {
+      other_educational_background.classList.add("hidden");
+      other_educational_background.removeAttribute("required");
+    }
+  }
+  edu_bg();
+</script>
+<script>
+    var cleave = new Cleave("#phone_number", {
+    blocks: [4, 7],
+    numericOnly: true,
+  });
+    var cleave2 = new Cleave("#whatsapp_number", {
+    blocks: [4, 7],
+    numericOnly: true,
+  });
+    const form = document.forms.become_a_tutor;
+    const nameInput = form.elements.name;
+    const emailInput = form.elements.email;
+    const phoneNoInput = form.elements.phone_number;
+    const whatsappNumberInput = form.elements.whatsapp_number;
+    const subjectsToStudyInput = form.elements.subjects_to_study;
+    const studentGradeOrClassInput = form.elements.student_grade_or_class;
+    const ftsb = document.getElementById("ftsb")
+    const phoneNoRegex = /^03[0-9]{2} [0-9]{7,11}$/;
+    form.addEventListener('submit', validate);
+    ftsb.addEventListener('click', validate);
+    function validate(event) {
+      event.preventDefault();
+      resetErrors();
+      let valid = true
+      console.log(emailInput.checkValidity());
+      if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+        setError(emailInput, 'Please enter a valid email address');
+        valid = false
+      }
+      if (!phoneNoRegex.test(phoneNoInput.value.trim())) {
+        setError(phoneNoInput, 'Please enter a valid Pakistani phone number');
+        valid = false
+      }
+      if (!phoneNoRegex.test(whatsappNumberInput.value.trim())) {
+        setError(whatsappNumberInput, 'Please enter a valid Pakistani phone number');
+        valid = false
+      }
+      if (!nameInput.value.trim()) {
+        setError(nameInput, 'Name is required');
+        valid = false
+      }
+      if (!subjectsToStudyInput.value.trim()) {
+        setError(subjectsToStudyInput, 'Subjects To Study are required');
+        valid = false
+      }
+      if (!studentGradeOrClassInput.value.trim()) {
+        setError(studentGradeOrClassInput, 'Student Grade or Class is required');
+        valid = false
+      }
+      if(valid){form.submit();}
+      
+    }
+    
+    function setError(input, message) {
+      input.classList.add('border-red-500');
+      const errorMessage = input.nextElementSibling;
+      errorMessage.textContent = message;
+    }
+    
+    function resetErrors() {
+      const errorMessages = form.querySelectorAll('.text-sm.text-red-500');
+      errorMessages.forEach((message) => (message.textContent = ''));
+    
+      const inputs = form.querySelectorAll('input,textarea');
+      inputs.forEach((input) => input.classList.remove('border-red-500'));
+    }
+</script>
+{% endblock script %}

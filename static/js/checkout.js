@@ -1,78 +1,103 @@
-let details = document.forms["details"];
-let confirmdetails = document.getElementById("confirmdetails")
-let productsincart = document.getElementById("productsincart")
-let paymentdiv = document.getElementById("paymentdiv")
-let continuebtn = document.getElementById("continuebtn")
-let completeorder = document.getElementById("completeorder")
-let productarray = new Array;
-let quantityarray = new Array;
-let prod = document.getElementById("product")
-let quan = document.getElementById("quantity")
-
 function submit() {
-  prod.setAttribute("value",productarray)
-  quan.setAttribute("value",quantityarray)
-  localStorage.removeItem("cart")
-  details.submit();
+  let checkoutform = document.getElementById("checkoutform")
+  var formData = new FormData(checkoutform);
+  let products = localStorage.getItem("cart")
+  formData.append('products', products);
+  $.ajax({
+    url: checkoutform.action,
+    type: checkoutform.method,
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function () {
+      localStorage.removeItem("cart")
+      window.location = "/"
+    },
+    error: function () {
+    }
+  });
 }
-function detailsvalidate() {
-    let valid = true
-    for (x = 0 ; x<=6 ;x++) {
-      if (!details.elements[x].checkValidity()) {
-        details.elements[x].nextElementSibling.innerHTML = details.elements[x].validationMessage;
-        console.log("not valid");
-        valid = false
-      } else {
-        details.elements[x].nextElementSibling.innerHTML = '';
-        console.log("valid");
-      }
+document.querySelectorAll(".alpha").forEach((input) => {
+  input.addEventListener("input", function () {
+    const aplhabetsonly = /^[a-zA-Z]+$/;
+    if (!aplhabetsonly.test(input.value)) {
+      input.value = input.value.replace(/[^a-zA-Z]+/g, "");
     }
-    if (valid) {
-      confirmdetails.classList.remove("hidden")
-      confirmdetails.firstElementChild.children[1].innerHTML = details.elements[1].value
-      confirmdetails.children[1].children[1].innerHTML = details.elements[4].value
-      details.classList.add("hidden");
-      confirmdetails.classList.remove("hidden");
-      continuebtn.innerHTML = "continue to payment"
-      continuebtn.setAttribute("onclick","payment()") 
-    }
+  });
+});
+var cleave = new Cleave("#phone_no", {
+  blocks: [4, 7],
+  numericOnly: true,
+});
+let firstErrorInput;
+const form = document.forms.checkoutform;
+const emailInput = form.elements.email;
+const phoneNoInput = form.elements.phone_no;
+const firstNameInput = form.elements.first_name;
+const lastNameInput = form.elements.last_name;
+const addressInput = form.elements.address;
+const cityInput = form.elements.city;
+const postalCodeInput = form.elements.postal_code;
+const cfsb = document.getElementById("cfsb")
+const phoneNoRegex = /^03[0-9]{2} [0-9]{7,11}$/;
+form.addEventListener('submit', validate);
+cfsb.addEventListener('click', validate);
+function validate(event) {
+  event.preventDefault();
+  resetErrors();
+  let valid = true
+  if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+    setError(emailInput, 'Please enter a valid email address');
+    valid = false
   }
-function payment() {
-    prod.setAttribute("value",`[${productarray}]`)
-  quan.setAttribute("value",`[${quantityarray}]`)
-  console.log(prod);
-  console.log(quan);
-    confirmdetails.classList.add("hidden");
-    continuebtn.classList.add("hidden");
-    paymentdiv.classList.remove("hidden");
-    completeorder.classList.remove("hidden");
+  if (!phoneNoRegex.test(phoneNoInput.value.trim())) {
+    setError(phoneNoInput, 'Please enter a valid Pakistani phone number');
+    valid = false
   }
-let cartchk = JSON.parse(localStorage.getItem("cart"))
-function productsvalidator() {
-  if (productsincart.childElementCount < Object.keys(cartchk).length) {
-    let errormessage = document.createElement("div")
-    errormessage.innerHTML = "Some items in your cart are not available"
-    productsincart.appendChild(errormessage)
-    return false;
+  if (!firstNameInput.value.trim()) {
+    setError(firstNameInput, 'Name is required');
+    valid = false
   }
+  if (!lastNameInput.value.trim()) {
+    setError(lastNameInput, 'Name is required');
+    valid = false
+  }
+  if (!addressInput.value.trim()) {
+    setError(addressInput, 'Name is required');
+    valid = false
+  }
+  if (!cityInput.value.trim()) {
+    setError(cityInput, 'Name is required');
+    valid = false
+  }
+  if (!postalCodeInput.value.trim()) {
+    setError(postalCodeInput, 'Name is required');
+    valid = false
+  }
+  if (valid) { submit() }
   else{
-    return true;
+    firstErrorInput.focus();
+    firstErrorInput.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'center',
+  });
+  }
+  
+}
+
+function setError(input, message) {
+  input.classList.add('border-red-500');
+  const errorMessage = input.nextElementSibling;
+  errorMessage.textContent = message;
+  if (!firstErrorInput) {
+    firstErrorInput = input;
   }
 }
-function quantityadder() {
-  let maxiteration = 0;
-  productsvalidator()===true?maxiteration = productsincart.childElementCount:maxiteration = productsincart.childElementCount - 1
-  for (let index = 1; index <= maxiteration; index++) {
-    let n = productsincart.children[index-1].children[0].innerHTML
-    console.log(n);
-    let m = n.replace(/ /g, "-")
-    console.log(m);
-    let quant = document.getElementById(`quantity${m}`)
-    quant.innerHTML = cartchk[n].quantity
-    productarray.push(n)
-    quantityarray.push(quant.innerHTML)
-  }
-  console.log(quantityarray);
-  console.log(productarray);
+
+function resetErrors() {
+  const errorMessages = form.querySelectorAll('.text-sm.text-red-500');
+  errorMessages.forEach((message) => (message.textContent = ''));
+  firstErrorInput = null;
+  const inputs = form.querySelectorAll('input,textarea');
+  inputs.forEach((input) => input.classList.remove('border-red-500'));
 }
-quantityadder()

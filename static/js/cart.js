@@ -4,9 +4,8 @@ let clearcartbtn = document.getElementById("clearcartbtn");
 let checkoutbtn = document.getElementById("checkoutbtn");
 let addtocartbtn = document.getElementById("addtocartbtn");
 let quantitydiv = document.getElementById("quantitydiv");
-let emptymsg = document.getElementById("emptymsg");
-let csrf = document.getElementsByName('csrfmiddlewaretoken');
-let checkoutform = document.getElementsByName('checkoutform');
+let checkoutform = document.forms["checkoutform"];
+let csrf = checkoutform[0]
 
 function cartset() {
     if (localStorage.getItem("cart") === null) {
@@ -16,41 +15,42 @@ function cartset() {
 window.onload = function() {
     cartset();
 };
-function cartchanger() {
+function cartchanger(sizeminus = 0) {
     let obj = JSON.parse(localStorage.getItem("cart"))
     let cartnumber = document.getElementById("cartnumber")
-    let size = Object.keys(obj).length;
+    let size = Object.keys(obj).length-sizeminus;
     cartnumber.innerHTML = size
     if (size === 0) {
-        emptymsg.classList.remove("hidden")
+        clearcart()
     }
     if (size > 0) {
         carthtml.innerHTML = ""
+        carthtml.classList.remove("justify-center")
         clearcartbtn.classList.remove("hidden")
         checkoutbtn.classList.remove("hidden")
     }
     for (let k = 1; k <= size; k++) {
         let box = document.createElement("div")
-        // let img = document.createElement("img")
-        // img.setAttribute('src',obj[Object.keys(obj)[k-1]].img);
-        // let quantity = document.createElement("div")
-        // quantity.innerHTML = `<button onclick="cartquantitychange(${k},'-')">-</button>
-        // <span id="cartquantity${k}">${obj[Object.keys(obj)[k-1]].quantity}</span>
-        // <button onclick="cartquantitychange(${k},'+')">+</button>`
-        // img.classList.add("aspect-square")
-        // box.appendChild(quantity)
+        box.classList.add("cart-item")
         box.innerHTML = `
-        <div class="box">
 		<img src="${obj[Object.keys(obj)[k-1]].img}">
 		<div class="details">
-			<span class="title">Title</span>
-			<span class="subtitle">Subtitle</span>
-			<span class="category">Category</span>
-            <div class="quantity">
+			<span class="name">${obj[Object.keys(obj)[k-1]].name}</span>
+			<span class="sku">${obj[Object.keys(obj)[k-1]].type}</span>
+            <div class="flex space-x-2 py-4">
+                <span class="font-semibold text-xl" >Rs. </span>
+                <div class="flex flex-col -space-y-2">
+                <span class="line-through text-xs" id="productprice">${obj[Object.keys(obj)[k-1]].price}</span>
+                <span class="font-semibold text-sm" id="productdiscountedprice">${obj[Object.keys(obj)[k-1]].discountedprice}</span>
+    </div>
+  </div>
+                <div class="flex">
+                <div class="flex quantity">
                 <button onclick="cartquantitychange(${k},'-')">-</button>
                 <div id="cartquantity${k}">${obj[Object.keys(obj)[k-1]].quantity}</div>
                 <button onclick="cartquantitychange(${k},'+')">+</button>
                 </div>
+                <button class="underline" onclick="removefromcart('${obj[Object.keys(obj)[k-1]].name}')">Remove</button>
                 </div>
                 </div>
                 `;
@@ -59,7 +59,13 @@ function cartchanger() {
 }
 cartchanger()
 function carttoggle() {
-    cartdiv.classList.toggle("hidden")
+    let currentpos = cartdiv.style.right;
+      if (currentpos == "0px") {
+        cartdiv.style.right = "-100%"
+      }
+      else{
+          cartdiv.style.right = "0"
+        }
 } 
 function clearcart() {
     carthtml.innerHTML = "Your cart is empty"
@@ -67,22 +73,18 @@ function clearcart() {
     clearcartbtn.classList.add("hidden")
     checkoutbtn.classList.add("hidden")
     localStorage.setItem("cart", JSON.stringify({}));
-    if (addtocartbtn !== null) {
-        quantitydiv.classList.remove("hidden")
-        addtocartbtn.setAttribute('onclick', 'addtocart()')
-        addtocartbtn.innerHTML = "add to cart"
+    if (addtocartbtn) {
+        buttonchanger()
     }
-    location.reload()
 } 
 function checkout() {
-    let obj = JSON.parse(localStorage.getItem("cart"))
-    let keys = Object.keys(obj);
-    let keysString = keys.join("_");
+    let products = localStorage.getItem("cart");
     $.ajax({
         type: "POST",
         url: "/shop/checkout/",
-        data: {'products': keysString,
-        'csrfmiddlewaretoken':csrf[0].value},
+        data: {'products': products,
+        'csrfmiddlewaretoken':csrf.value,
+    },
         success: function(html) {
             var newUrl = "/shop/checkout/";
             window.history.replaceState({}, "", newUrl);
@@ -119,4 +121,18 @@ function cartquantitychange(product , operator) {
         
     }
     localStorage.setItem("cart", JSON.stringify(obj));
+}
+function removefromcart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart"))
+    delete cart[product]; 
+    let cartlength = Object.keys(cart).length;
+    if (cartlength === 0) {
+        
+    }
+    cartchanger(sizeminus = 1)
+    localStorage.setItem("cart", JSON.stringify(cart));
+    if (addtocartbtn) {
+        buttonchanger()
+    }
+    
 }
