@@ -23,6 +23,12 @@ def get_exclude(model_admin, request, obj=None):
 def delete_selected(model_admin, request, queryset):
     if not request.user.is_superuser:
         queryset.update(is_archived=True)
+    # else:
+    #     queryset.delete()
+    # count = queryset.count()
+    # message = f"{count} instances successfully deleted."
+    # messages.success(request, message)
+    # count = queryset.count()
 delete_selected.short_description = "Delete selected items"
 def unarchive(model_admin, request, queryset):
     queryset.update(is_archived=False)

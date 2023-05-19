@@ -1,5 +1,10 @@
 {% extends 'skapbase.html' %}
 {% load static %}
+{% block title %}Contact{% endblock title %}
+{% block breadcrumbtitle %}Contact{% endblock breadcrumbtitle %}
+{% block breadcrumb %}
+<a href="{{home_url}}">Home</a>&nbsp;>&nbsp;Contact
+{% endblock breadcrumb %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
 {% endblock css %}
@@ -167,6 +172,7 @@
           name = "contact_form"
           class="w-full flex flex-col items-center justify-center py-4"
         >
+        {% csrf_token %}
           <input
             type="text"
             placeholder="Name"

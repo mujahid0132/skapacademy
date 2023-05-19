@@ -1,4 +1,10 @@
-{% extends 'skapbase.html' %} {% block main %}
+{% extends 'skapbase.html' %} 
+{% block title %}Become A Tutor{% endblock title %}
+{% block breadcrumbtitle %}Become A Tutor{% endblock breadcrumbtitle %}
+{% block breadcrumb %}
+<a href="{{home_url}}">Home</a>&nbsp;>&nbsp;Become A Tutor
+{% endblock breadcrumb %}
+{% block main %}
 <div
   class="w-[80vw] mx-auto pt-5 flex flex-col space-y-3 items-center justify-between"
 >
@@ -86,14 +92,25 @@
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
       <label for="years_of_experience" class="block text-sm font-semibold px-2">Years Of Experience:</label
-      ><input
-        type="text"
+      >
+      <select
         required
         name="years_of_experience"
         id="years_of_experience"
-        placeholder="Years Of Experience"
+        onchange="edu_bg()"
         class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-      /><span class="text-sm text-red-500"></span>
+      >
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10+">10+</option>
+      </select><span class="text-sm text-red-500"></span>
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
       <label for="highest_qualification_and_institute" class="block text-sm font-semibold px-2">Highest Qualification And Institute:</label
@@ -172,30 +189,31 @@
       /><span class="text-sm text-red-500"></span>
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
-      <label for="name" class="block text-sm font-semibold px-2"
+      <label class="block text-sm font-semibold px-2"
         >Can you teach on online platforms:</label
       >
       <div class="flex items-center mx-auto w-2/4 justify-between">
         <div>
-          <label for="yes">Yes</label>
+          <label for="can_teach_on_online_platforms_yes">Yes</label>
           <input
             type="radio"
             required
             value="yes"
+            checked
             name="can_teach_on_online_platforms"
-            id="can_teach_on_online_platforms"
+            id="can_teach_on_online_platforms_yes"
             class="border-2 border-black m-2"
             id="yes"
           />
         </div>
         <div>
-          <label for="no">No</label>
+          <label for="can_teach_on_online_platforms_no">No</label>
           <input
             type="radio"
             required
             value="no"
             name="can_teach_on_online_platforms"
-            id="can_teach_on_online_platforms"
+            id="can_teach_on_online_platforms_no"
             class="border-2 border-black m-2"
             id="no"
           />
@@ -205,34 +223,34 @@
       </div>
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
-      <label for="name" class="block text-sm font-semibold px-2"
+      <label for="message_or_objective" class="block text-sm font-semibold px-2"
         >Cover Letter:</label
       >
-    <textarea
+      <textarea
       name="message_or_objective"
       id="message_or_objective"
       placeholder="Cover Letter"
       class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
       cols="30"
       rows="10"
-    ></textarea>
-    <span class="text-sm text-red-500"></span>
+      ></textarea>
+      <span class="text-sm text-red-500"></span>
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
       <label for="cnic_image" class="block text-sm font-semibold px-2">CNIC:</label
-      ><input type="file" name="cnic_image" id="cnic_image" required class="appearance-none bg-gray-100 py-2 px-4 rounded-md"/><span
+      ><input type="file" name="cnic_image" id="cnic_image" required class="appearance-none file bg-gray-100 py-2 px-4 rounded-md"/><span
         class="text-sm text-red-500"
       ></span>
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
       <label for="latest_certificate_picture" class="block text-sm font-semibold px-2">Latest Certificate Picture:</label
-      ><input type="file" name="latest_certificate_picture" id="latest_certificate_picture" required class="appearance-none bg-gray-100 py-2 px-4 rounded-md"/><span
+      ><input type="file" name="latest_certificate_picture" id="latest_certificate_picture" required class="appearance-none file bg-gray-100 py-2 px-4 rounded-md"/><span
         class="text-sm text-red-500"
       ></span>
     </div>
     <div class="flex flex-col w-full sm:w-96 my-2">
       <label for="cv" class="block text-sm font-semibold px-2">CV:</label
-      ><input type="file" name="cv" id="cv" required class="appearance-none bg-gray-100 py-2 px-4 rounded-md" />
+      ><input type="file" name="cv" id="cv" required class="appearance-none file bg-gray-100 py-2 px-4 rounded-md" />
       <span
         class="text-sm text-red-500"
       ></span>
@@ -244,22 +262,21 @@
 {% endblock main %}
 {% block script %}
 <script>
-  let educational_background = document.getElementById(
-    "educational_background"
-  );
+  let educational_background = document.getElementById("educational_background");
+  let otheredubg = document.getElementById("other_educational_background")
   let other_educational_background = document.getElementById(
     "other_educational_background_div"
-  );
-  function edu_bg() {
-    var selectedOption =
-      educational_background.options[educational_background.selectedIndex]
-        .value;
+    );
+    function edu_bg() {
+      var selectedOption =
+      educational_background.options[educational_background.selectedIndex].value;
     if (selectedOption === "other") {
       other_educational_background.classList.remove("hidden");
-      other_educational_background.setAttribute("required", "true");
+      console.log("yes daddy");
+      otheredubg.setAttribute("required", "true");
     } else {
       other_educational_background.classList.add("hidden");
-      other_educational_background.removeAttribute("required");
+      otheredubg.removeAttribute("required");
     }
   }
   edu_bg();
@@ -274,45 +291,104 @@
     numericOnly: true,
   });
     const form = document.forms.become_a_tutor;
-    const nameInput = form.elements.name;
-    const emailInput = form.elements.email;
-    const phoneNoInput = form.elements.phone_number;
-    const whatsappNumberInput = form.elements.whatsapp_number;
-    const subjectsToStudyInput = form.elements.subjects_to_study;
-    const studentGradeOrClassInput = form.elements.student_grade_or_class;
+    const name = form.elements.name;
+    const email = form.elements.email;
+    const date_of_birth = form.elements.date_of_birth;
+    const phone_number = form.elements.phone_number;
+    const whatsapp_number = form.elements.whatsapp_number;
+    const highest_qualification_and_institute = form.elements.highest_qualification_and_institute;
+    const can_teach_classes = form.elements.can_teach_classes;
+    const can_teach_subjects = form.elements.can_teach_subjects;
+    const can_teach_in_areas = form.elements.can_teach_in_areas;
+    const message_or_objective = form.elements.message_or_objective;
+    const cnic_image = form.elements.cnic_image;
+    const latest_certificate_picture = form.elements.latest_certificate_picture;
+    const cv = form.elements.cv;
     const ftsb = document.getElementById("ftsb")
     const phoneNoRegex = /^03[0-9]{2} [0-9]{7,11}$/;
     form.addEventListener('submit', validate);
     ftsb.addEventListener('click', validate);
+    const fileInputs = document.querySelectorAll('.file');
+
+{% comment %} fileInputs.forEach(fileInput => {
+  fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+  
+    const fileSize = file.size;
+    const maxSize = 2 * 1024 * 1024;
+  
+    if (fileSize > maxSize) {
+      setError(fileInput, 'Maximum file size is 2MB');
+      fileInput.value = '';
+      return;
+    }
+  });
+}); {% endcomment %}
+
     function validate(event) {
       event.preventDefault();
       resetErrors();
       let valid = true
-      console.log(emailInput.checkValidity());
-      if (!emailInput.value.trim() || !emailInput.checkValidity()) {
-        setError(emailInput, 'Please enter a valid email address');
+      if (!name.value.trim()) {
+        setError(name, 'Name is required');
         valid = false
       }
-      if (!phoneNoRegex.test(phoneNoInput.value.trim())) {
-        setError(phoneNoInput, 'Please enter a valid Pakistani phone number');
+      if (!email.value.trim() || !email.checkValidity()) {
+        setError(email, 'Please enter a valid email address');
         valid = false
       }
-      if (!phoneNoRegex.test(whatsappNumberInput.value.trim())) {
-        setError(whatsappNumberInput, 'Please enter a valid Pakistani phone number');
+      if (!date_of_birth.value.trim()) {
+        setError(date_of_birth, 'Date Of Birth is required');
         valid = false
       }
-      if (!nameInput.value.trim()) {
-        setError(nameInput, 'Name is required');
+      if (!phoneNoRegex.test(phone_number.value.trim())) {
+        setError(phone_number, 'Please enter a valid Pakistani phone number');
         valid = false
       }
-      if (!subjectsToStudyInput.value.trim()) {
-        setError(subjectsToStudyInput, 'Subjects To Study are required');
+      if (!phoneNoRegex.test(whatsapp_number.value.trim())) {
+        setError(whatsapp_number, 'Please enter a valid Pakistani phone number');
         valid = false
       }
-      if (!studentGradeOrClassInput.value.trim()) {
-        setError(studentGradeOrClassInput, 'Student Grade or Class is required');
+      if (!highest_qualification_and_institute.value.trim()) {
+        setError(highest_qualification_and_institute, 'Highest Qualification And Institute is required');
         valid = false
       }
+      if (!can_teach_classes.value.trim()) {
+        setError(can_teach_classes, 'Classes you can teach is required');
+        valid = false
+      }
+      if (!can_teach_subjects.value.trim()) {
+        setError(can_teach_subjects, 'Subjects you can teach is required');
+        valid = false
+      }
+      if (!can_teach_in_areas.value.trim()) {
+        setError(can_teach_in_areas, 'in which areas you can teach is required');
+        valid = false
+      }
+      if (!message_or_objective.value.trim()) {
+        setError(message_or_objective, 'Cover letter is required');
+        valid = false
+      }
+      if (otheredubg.required) {
+        setError(otheredubg, 'Other Educational Background is required');
+        valid = false
+      }
+      if (!cnic_image.files[0]) {
+        setError(cnic_image, 'Cnic is required');
+        valid = false
+      }
+      if (!latest_certificate_picture.files[0]) {
+        setError(latest_certificate_picture, 'Latest Certificate Picture is required');
+        valid = false
+      }
+      if (!cv.files[0]) {
+        setError(cv, 'CV is required');
+        valid = false
+      }
+      
       if(valid){form.submit();}
       
     }

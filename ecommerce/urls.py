@@ -6,6 +6,5 @@ urlpatterns = [
     path('products/<str:slug>/', views.productdetail),
     path('checkout/', views.checkout),
     path('complete/', views.complete_order),
-    path('test/', views.test),
     path('request-a-book/', views.request_a_book),
 ]

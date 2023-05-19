@@ -1,4 +1,9 @@
 {% extends 'skapbase.html' %}
+{% block title %}Find A Tutor{% endblock title %}
+{% block breadcrumbtitle %}Find A Tutor{% endblock breadcrumbtitle %}
+{% block breadcrumb %}
+<a href="{{home_url}}">Home</a>&nbsp;>&nbsp;Find A Tutor
+{% endblock breadcrumb %}
 {% block main %}
 <div class="w-[80vw] mx-auto pt-5 flex flex-col space-y-3 items-center justify-between">
   <div class="py-4">
@@ -68,7 +73,6 @@
       event.preventDefault();
       resetErrors();
       let valid = true
-      console.log(emailInput.checkValidity());
       if (!emailInput.value.trim() || !emailInput.checkValidity()) {
         setError(emailInput, 'Please enter a valid email address');
         valid = false

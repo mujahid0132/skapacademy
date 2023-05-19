@@ -9,7 +9,6 @@ def lms_request(request):
     if request.method == 'POST':
         course_name = request.POST.get('course_name')
         course = LmsCourse.objects.get(name=course_name)
-        print(request.POST.get('course_name'))
         new_lms_request = LmsRequest.objects.create(
         name =  request.POST.get('name'),
         email =  request.POST.get('email'),
@@ -20,3 +19,5 @@ def lms_request(request):
         new_lms_request.save()
         return redirect("/")
     return render(request,"lms_request.html",context)
+def lms(request):
+    return render(request,"lms.html")

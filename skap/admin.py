@@ -9,5 +9,9 @@ class BlogAdmin(admin.ModelAdmin):
     get_exclude = get_exclude
     delete_selected = delete_selected
     unarchive = unarchive
-    
+    readonly_fields = ('slug','date_posted',)
+# class ContactAdmin(admin.ModelAdmin):
+
 admin.site.register(Blog,BlogAdmin)
+admin.site.register(Contact)
+admin.site.register(Testimonial)

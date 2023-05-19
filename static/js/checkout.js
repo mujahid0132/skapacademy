@@ -1,3 +1,6 @@
+window.scrollTo({
+  top:0
+})
 function submit() {
   let checkoutform = document.getElementById("checkoutform")
   var formData = new FormData(checkoutform);
@@ -55,23 +58,23 @@ function validate(event) {
     valid = false
   }
   if (!firstNameInput.value.trim()) {
-    setError(firstNameInput, 'Name is required');
+    setError(firstNameInput, 'First Name is required');
     valid = false
   }
   if (!lastNameInput.value.trim()) {
-    setError(lastNameInput, 'Name is required');
+    setError(lastNameInput, 'Last Name is required');
     valid = false
   }
   if (!addressInput.value.trim()) {
-    setError(addressInput, 'Name is required');
+    setError(addressInput, 'Address is required');
     valid = false
   }
   if (!cityInput.value.trim()) {
-    setError(cityInput, 'Name is required');
+    setError(cityInput, 'City is required');
     valid = false
   }
   if (!postalCodeInput.value.trim()) {
-    setError(postalCodeInput, 'Name is required');
+    setError(postalCodeInput, 'Postal Code is required');
     valid = false
   }
   if (valid) { submit() }

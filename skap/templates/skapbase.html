@@ -4,13 +4,14 @@
 {% url 'contact' as contact_url%}
 {% url 'shop' as shop_url%}
 {% url 'blog' as blog_url%}
+{% url 'lms' as lms_url%}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 , user-scalable=0"/>
+    <title>{% block title%}{% endblock title %} - Skap Academy</title>
     {% block css %}
     {% endblock css %}
     <style>
@@ -23,20 +24,28 @@
         }
       }
     </style>
+    <style>
+      .reset > *{
+          all: revert;
+  }
+  </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/owltheme.css' %}">
     {% tailwind_css %}
   </head>
   <body>
     <header class="fixed top-0 z-50 w-full">
       <div class="bg-skapblue w-full h-11 flex text-white items-center">
-        <div
+        <a
           class="bg-skapred h-full w-[59.5%] topsectionred flex items-center justify-center"
+          href="tel:03001234568"
         >
           <span class="text-xs font-semibold sm:text-sm"
             >Call Now : 0300 123 4568</span
           >
-        </div>
-        <span class="font-semibold w-[40.5%] text-center text-xs sm:text-sm"
-          >Login/Register</span
+        </a>
+        <a href="/lms/" class="font-semibold w-[40.5%] text-center text-xs sm:text-sm"
+          >Login/Register</a
         >
       </div>
       <div
@@ -64,13 +73,7 @@
           >
             <img src="{% static 'img/logo.png' %}" alt="logo" class="h-14"/>
           </a>
-          {% if request.path|slice:"5" == '/shop' %}
-          <button onclick="carttoggle()" class="absolute right-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><div id="cartnumber" class="bg-skapred text-white w-4 text-xs absolute top-0 right-0 aspect-square rounded-full">0</div></button>{% else %}
-          <a href="/shop" class="absolute right-4">
-            <button><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><div id="cartnumber" class="bg-skapred text-white w-4 text-xs absolute top-0 right-0 aspect-square rounded-full">0</div></button>
-          </a>
-          <div class="cart-item hidden">asd</div>
-          {% endif %}
+          <button onclick="carttoggle()" class="absolute right-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><div id="cartnumber" class="bg-skapred text-white w-4 text-xs absolute top-0 right-0 aspect-square rounded-full">0</div></button>
           <nav
           id="nav"
             class="absolute flex items-center justify-end w-full h-full transition-all duration-500 grow md:static -z-30 md:z-auto" 
@@ -119,11 +122,12 @@
     <aside
       class="bg-skapred h-[220px] w-full pt-28 hidden md:flex flex-col justify-center px-[10vw] lg:px-[20vw] text-white"
     >
-      <span class="text-2xl font-bold px-4">About Us</span>
-      <span class="text-[0.65rem] font-bold px-4">Home  Services</span>
+      <span class="text-2xl font-bold px-4">{% block breadcrumbtitle %}{% endblock breadcrumbtitle %}</span>
+      <div class="text-[0.65rem] flex items-center font-bold px-4">{% block breadcrumb %}{% endblock breadcrumb %}</div>
     </aside>
     {% endif %}
     <aside id="cartdiv" class="fixed top-0 z-50 flex w-full justify-end h-full overflow-hidden touch-manipulation transition-all duration-700" style="right: -100%;">
+      <div class="cart-item hidden"></div>
       <div class="grow h-full" onclick="carttoggle()"></div>
       <div class="flex flex-col items-center w-96 bg-white h-full shadow-2xl">
         <div class="flex w-full items-center justify-between px-6 py-4 border-b-2"><span class="font-semibold text-xl">Cart</span><button onclick="carttoggle()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
@@ -137,7 +141,7 @@
       </div>
        </aside>
     
-    <main {% if not request.path == home_url %}class="pt-28 md:pt-0"{% endif %}>
+    <main class="pt-28 md:pt-0">
       {% block main %}{% endblock main %}
     </main>
     <footer
@@ -418,9 +422,9 @@
     </footer>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js" integrity="sha512-KaIyHb30iXTXfGyI9cyKFUIRSSuekJt6/vqXtyQKhQP6ozZEGY8nOtRS6fExqE4+RbYHus2yGyYg1BrqxzV6YA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  {% block script %}{% endblock script %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src={% static 'js/cart.js' %}></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src={% static 'js/cart.js' %}></script>
   <script>
     let nav = document.getElementById("nav")
     let navbtn = document.getElementById("navbtn")
@@ -443,4 +447,6 @@
       });
     });
   </script>
+  {% block script %}{% endblock script %}
+  
 </html>

@@ -1,11 +1,13 @@
 {% extends 'skapbase.html' %}
 {% load static %}
+{% block title %}Home{% endblock title %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 {% endblock css %}
 {% block main %}
-<section
-  class="bg-[url('/static/img/hero.png')] w-full pb-[65%] sm:pb-[50%] bg-cover bg-no-repeat bg-center mt-28 md:mt-11 flex items-center relative"
+<section class="owl-carousel hero-carousel md:mt-11">
+  <div
+  class="bg-[url('/static/img/hero.png')] w-full pb-[65%] sm:pb-[50%] bg-cover bg-no-repeat bg-center flex items-center relative"
 >
   <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
     <div
@@ -32,9 +34,39 @@
       </div>
     </div>
   </div>
+</div>
+  <div
+  class="bg-[url('/static/img/hero.png')] w-full pb-[65%] sm:pb-[50%] bg-cover bg-no-repeat bg-center flex items-center relative"
+>
+  <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
+    <div
+      class="bg-gradient-to-r from-[#000080ca] via-[#0000804e] h-full w-full"
+    >
+      <div
+        class="flex flex-col items-start justify-center w-3/5 h-full pl-[10vw] lg:pl-[20vw]"
+      >
+        <span
+          class="text-white w-full text-[1.3rem] sm:text-[2rem] lg:text-[2.8rem] font-bold tracking-tight"
+          >Learning Unbound</span
+        >
+        <span
+          class="text-white w-4/5 text-[0.6rem] ml-1 sm:text-sm lg:text-base leading-3 tracking-tighter"
+          >Global Online Academy is a nonprofit organization that
+          reimagines learning to empower students and eduvcators to thrive
+          in a globally networked society.</span
+        >
+        <button
+          class="bg-skapred text-white rounded-xl text-[0.6rem] sm:text-sm px-4 sm:px-9 mt-4 md:mt-8 py-1"
+        >
+          Read More
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 <section
-  class="w-full h-[350px] md:h-[550px] md:-mt-14 flex items-center flex-col relative -mb-11"
+  class="w-full h-[350px] md:h-[550px] -mt-6 md:-mt-14 flex items-center flex-col relative z-10 -mb-11"
 >
   <div
     class="h-28 w-[85%] lg:w-[65%] bg-white md:flex shadow-2xl items-center justify-center hidden"
@@ -272,8 +304,8 @@
       </div>
       <div class="w-2/4 flex items-center justify-center h-full mt-8 md:mt-0">
         <div
-        class="grid md:grid-cols-2 place-content-center h-full gap-1 lg:gap-7"
-      >
+        class="grid md:grid-cols-2 place-content-center h-full gap-1 lg:gap-7 welcometoskap-carousel owl-carousel owl-theme"
+        >
         <div
           class="bg-white h-[9rem] w-[10.5rem] aspect-square flex items-center justify-center"
         >
@@ -305,7 +337,7 @@
           </div>
         </div>
         <div
-          class="bg-white h-[9rem] w-[10.5rem] aspect-square md:flex items-center justify-center hidden"
+          class="bg-white h-[9rem] w-[10.5rem] aspect-square flex items-center justify-center"
         >
           <div
             class="bg-white h-[7rem] w-[8.5rem] aspect-square shadow-xl flex flex-col items-center justify-start"
@@ -335,7 +367,7 @@
           </div>
         </div>
         <div
-          class="bg-white h-[9rem] w-[10.5rem] aspect-square md:flex items-center justify-center hidden"
+          class="bg-white h-[9rem] w-[10.5rem] aspect-square flex items-center justify-center"
         >
           <div
             class="bg-white h-[7rem] w-[8.5rem] aspect-square shadow-xl flex flex-col items-center justify-start"
@@ -365,7 +397,7 @@
           </div>
         </div>
         <div
-          class="bg-white h-[9rem] w-[10.5rem] aspect-square md:flex items-center justify-center hidden"
+          class="bg-white h-[9rem] w-[10.5rem] aspect-square flex items-center justify-center"
         >
           <div
             class="bg-white h-[7rem] w-[8.5rem] aspect-square shadow-xl flex flex-col items-center justify-start"
@@ -489,25 +521,33 @@
       accumsan lacus vel facilisis.
     </span>
   </div>
-  <div class="mx-6 grid overflow-x-scroll gap-2 my-8 grid-cols-5 md:gap-5 md:mx-4 place-content-center">
+  <div class="shop-carousel owl-carousel md:w-3/5">
+   
     {% for pr in products %}
     <a href="/shop/products/{{pr.slug}}">
-    <div class="py-4 px-2 border rounded-2xl flex items-center justify-center flex-col">
-        <img src="/media/{{pr.image}}" alt="productimg" class="h-48 sm:h-60 w-full rounded-md object-contain object-center">
-      <p class="text-center text-xs sm:text-base pt-2">{{pr.name}}</p>
-      <div class="flex items-center justify-center pt-2 space-x-2">
-        <span class="font-semibold text-xl" >Rs. </span>
-        <div class="flex flex-col -space-y-2">
-          <span {% if pr.discounted_price %}class="line-through text-xs"{% endif %} id="productprice">{{pr.price}}</span>
-        <span class="font-semibold text-sm" id="productdiscountedprice">{{pr.discounted_price}}</span>
+      <div class="py-4 px-2 rounded-2xl flex items-center justify-center flex-col">
+          <img src="/media/{{pr.image}}" alt="productimg" class="h-48 sm:h-60 w-[160px] rounded-md object-contain object-center">
+        <p class="text-center text-xs sm:text-base pt-2">{{pr.name}}</p>
+        <div class="flex items-center justify-center pt-2 space-x-2">
+          <span class="font-semibold text-xl" >Rs. </span>
+          <div class="flex flex-col -space-y-2">
+            <span {% if pr.discounted_price %}class="line-through text-xs"{% endif %} id="productprice">{{pr.price}}</span>
+          <span class="font-semibold text-sm" id="productdiscountedprice">{{pr.discounted_price}}</span>
+          </div>
         </div>
       </div>
-      <div class="text-center">
-        {% comment %} <button class="text-white bg-red-800 text-sm font-semibold  rounded-full py-2 px-3 capitalize md:text-xs md:px-2 ">Add To Cart</button> {% endcomment %}
-      </div>
-    </div>
   </a>
     {% endfor %}
+    <a href="/shop/">
+      <div class="py-4 px-2 rounded-2xl flex items-center justify-center flex-col">
+          <div class="h-48 sm:h-60 rounded-md w-[160px] border flex items-center justify-center flex-col">
+            <div class="h-20 aspect-1 rounded-[50%] bg-skapred flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+            
+          </div>
+          <p class="text-center text-xs sm:text-base pt-2 capitalize">view more at shop</p>
+        
+      </div>
+  </a>
   </div>
 </section>
 <section
@@ -588,7 +628,7 @@
 <section
   class="h-[480px] sm:h-[470px] flex items-center justify-center md:px-10 lg:px-32 b1150:px-60 xl:px-72 pt-4 border-b-4 shadow-xl border-black"
 >
-<div class="w-full 2xl:w-3/4 flex items-center justify-center ">
+  <div class="w-full 2xl:w-3/4 flex items-center justify-center ">
   <div class="md:flex hidden items-center justify-start w-2/4 h-full">
     <img src="{% static 'img/findatutor.png' %}" alt="" class="h-[450px] -mb-1" />
   </div>
@@ -657,108 +697,101 @@
   </div>
   </div>
 </section>
-<section class="flex items-center justify-center">
-  <div class="flex flex-col items-center mx-5 b850:mx-20 h-full py-16">
-    <span class="text-4xl font-bold">Testimonial</span>
-    <span class="my-2 font-semibold leading-4 text-center"
-      >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </span>
-    <div class="grid grid-cols-1 gap-1 sm:grid-cols-3 mt-11">
+<section class="flex flex-col items-center h-full py-16">
+  <span class="text-4xl font-bold">Testimonial</span>
+  <span class="my-2 font-semibold leading-4 text-center"
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  </span>
+  <div class="testimonial-carousel owl-carousel md:w-4/5 lg:w-3/5">
+    {% for t in testimonial %}
+    <div
+      class="flex flex-col items-center w-[200px] justify-center bg-skapred relative my-4"
+    >
+      <img
+        src="{% static 'img/quote.png' %}"
+        class="absolute -top-20 -right-20 scale-[0.15]"
+        alt=""
+      />
       <div
-        class="flex flex-col items-center w-[200px] justify-center bg-skapred relative"
+        class="w-24 h-24 mt-8 mb-4 outline-2 rounded-[50%] outline-offset-4 outline overflow-hidden outline-white"
       >
-        <img
-          src="{% static 'img/quote.png' %}"
-          class="absolute -top-4 right-0 scale-[0.666]"
-          alt=""
-        />
-        <div
-          class="w-24 h-24 mt-8 mb-4 bg-black rounded-full outline-2 outline-offset-4 outline outline-white"
-        >
-          <img src="{% static 'img/testimonial.png' %}" alt="" />
-        </div>
-        <span class="font-bold text-white text-[1.15rem] leading-4"
-          >Zeeshan Akram</span
-        >
-        <span
-          class="font-semibold text-[0.6rem] text-white text-right w-3/5 mb-2"
-          >CEO</span
-        >
-        <span
-          class="font-semibold text-[0.6rem] text-white w-full px-5 leading-[0.666rem] mb-6"
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-          ipsum suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis. suspendisse ultrices
-          gravida. Risus commodo viverra maecenas accumsan lacus vel
-          facilisis suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis
-        </span>
+        <img src="/media/{{t.image}}" alt="" class="w-full h-full object-cover aspect-1 object-center"/>
       </div>
-      <div
-        class="flex flex-col items-center w-[200px] justify-center bg-skapred relative"
+      <span class="font-bold text-white text-[1.15rem] leading-4"
+        >{{t.name}}</span
       >
-        <img
-          src="{% static 'img/quote.png' %}"
-          class="absolute -top-4 right-0 scale-[0.666]"
-          alt=""
-        />
-        <div
-          class="w-24 h-24 mt-8 mb-4 bg-black rounded-full outline-2 outline-offset-4 outline outline-white"
-        >
-          <img src="{% static 'img/testimonial.png' %}" alt="" />
-        </div>
-        <span class="font-bold text-white text-[1.15rem] leading-4"
-          >Zeeshan Akram</span
-        >
-        <span
-          class="font-semibold text-[0.6rem] text-white text-right w-3/5 mb-2"
-          >CEO</span
-        >
-        <span
-          class="font-semibold text-[0.6rem] text-white w-full px-5 leading-[0.666rem] mb-6"
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-          ipsum suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis. suspendisse ultrices
-          gravida. Risus commodo viverra maecenas accumsan lacus vel
-          facilisis suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis
-        </span>
-      </div>
-      <div
-        class="flex flex-col items-center w-[200px] justify-center bg-skapred relative"
+      <span
+        class="font-semibold text-[0.6rem] text-white text-right w-3/5 mb-2"
+        >{{t.designation}}</span
       >
-        <img
-          src="{% static 'img/quote.png' %}"
-          class="absolute -top-4 right-0 scale-[0.666]"
-          alt=""
-        />
-        <div
-          class="w-24 h-24 mt-8 mb-4 bg-black rounded-full outline-2 outline-offset-4 outline outline-white"
-        >
-          <img src="{% static 'img/testimonial.png' %}" alt="" />
-        </div>
-        <span class="font-bold text-white text-[1.15rem] leading-4"
-          >Zeeshan Akram</span
-        >
-        <span
-          class="font-semibold text-[0.6rem] text-white text-right w-3/5 mb-2"
-          >CEO</span
-        >
-        <span
-          class="font-semibold text-[0.6rem] text-white w-full px-5 leading-[0.666rem] mb-6"
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-          ipsum suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis. suspendisse ultrices
-          gravida. Risus commodo viverra maecenas accumsan lacus vel
-          facilisis suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis
-        </span>
-      </div>
+      <span
+        class="font-semibold text-[0.6rem] text-white w-full px-5 leading-[0.666rem] mb-6"
+        style="overflow-wrap: break-word;"
+        >{{t.comments}}
+      </span>
     </div>
+    {% endfor %}
   </div>
 </section>
 {% endblock main %}
+{% block script %}  
+<script>
+  $(document).ready(function(){
+    var shop = $('.shop-carousel');
+    var testimonial = $('.testimonial-carousel');
+    var hero = $('.hero-carousel');
+    var welcometoskap = $('.welcometoskap-carousel');
+    shop.owlCarousel({
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:1,
+          },
+          768:{
+              items:3,
+          },
+          1700:{
+            items:5,
+          }
+      }
+    });
+    testimonial.owlCarousel({
+      dots:true,
+      center:true,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:1,
+          },
+          768:{
+              items:3,
+          },
+          1700:{
+            items:5,
+          }
+      }
+    });
+    hero.owlCarousel({
+      center:true,
+      loop:true,
+      items:1,
+    });
+    function initwtscarousel() {
+      if($(window).width() > 768){
+        welcometoskap.trigger('destroy.owl.carousel');
+      }
+      else{
+        welcometoskap.owlCarousel({
+          dots:true,
+          center:true,
+          loop:true,
+          items:1,
+        });
+      }
+    }
+    initwtscarousel()
+    $(window).resize(initwtscarousel)
+  });
+</script>
+{% endblock script %}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %} </title>
+</head>
+<body>
+    can i get title block value here
+    <div class="breadcrumb">
+        <!-- how to dynamic breadcrumb here according to page as name got in block title from inherited page -->
+    </div>
+    <main>
+        {% block main %}{% endblock main %}
+    </main>
+</body>
+</html>

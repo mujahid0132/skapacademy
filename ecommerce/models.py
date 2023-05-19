@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django_quill.fields import QuillField
 from mptt.models import MPTTModel
+from django.utils.text import slugify
 
 class ProductType(MPTTModel):
     name = models.CharField(max_length=255,primary_key=True)
@@ -37,7 +38,7 @@ class Product(models.Model):
             if self.discounted_price>self.price:
                 raise ValidationError('Discounted-Price Should Be Less Than Price')
     def save(self, *args, **kwargs):
-        self.slug = self.name.replace(" ", "-")
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
     def __str__(self):
         return str(self.name) 

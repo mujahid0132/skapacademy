@@ -1,58 +1,122 @@
-{% extends 'shopbase.html' %}
-{% load static %}
-{% block body %}checkout
-<form action="/shop/complete/" name="details" method="post">
-    <span>contact information</span><br>
-    {% csrf_token %}
-    <input type="text" required name="email" placeholder="Email" class="border-2 border-black m-2" id="">
-    <input type="text" required name="phone_no" placeholder="Mobile No." class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span>
-    <input type="text" required name="first_name" placeholder="Firstname" class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span><br>
-    <input type="text" required name="last_name" placeholder="Lastname" class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span>
-    <input type="text" required name="address" placeholder="address" class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span><br>
-    <input type="text" required name="city" placeholder="City" class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span>
-    <input type="text" required name="postal_code" placeholder="Postal Code" class="border-2 border-black m-2" id="">
-    <span class="text-sm text-red-500"></span><br>
-    <select required name="country">
-        <option value="pakistan" selected>Pakistan</option>
-      </select>
-      <span class="text-sm text-red-500"></span>
-    {% comment %} <input type="text" required name="phone" placeholder="Phone" class="border-2 border-black m-2" id=""> {% endcomment %}
-    {% comment %} <span class="text-sm text-red-500"></span><br> {% endcomment %}
-    <input type="text" name="product"  id="product" class="hidden">
-    <input type="text" name="quantity" id="quantity" class="hidden">
-</form>
-<div id="confirmdetails" class="hidden">
-  <div class="space-x-1">
-    <span class="font-bold">Contact:</span><span></span>
-    <button type="button" onclick="previous()" class="text-blue-400 underline">Edit</button>
+{% load tailwind_tags static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Skap Academy</title>
+  {% tailwind_css %}
+</head>
+<body class="scroll-smooth">
+  <div class="flex items-center justify-center border-b bg-white py-4 sm:px-10 lg:px-20 xl:px-32 fixed top-0 w-full z-50">
+    <a href="#" class="text-2xl font-bold text-gray-800"><img src="{% static 'img/logo.png' %}" alt="logo" class="h-14"/></a>
   </div>
-  <div class="space-x-1">
-    <span class="font-bold">Ship To:</span><span></span>
-    <button type="button" onclick="previous()" class="text-blue-400 underline">Edit</button>
-  </div>
-</div>
-<div id="paymentdiv" class="hidden">
-  <select name="paymentmethod" id="paymentmethod">
-    <option value="cod" selected>CASH ON DELIVERY</option>
-  </select>
-</div>
-<button id="continuebtn" onclick="detailsvalidate()">continue to shipping</button>
-<button id="completeorder" class="hidden" onclick="submit()">complete order</button>
-<div id="productsincart">
-  {% for pr in products %}
-    <div class="float-right mr-24">
-      <span>{{pr.name}}</span>
-      <div class="relative bg-green-500 w-12 h-12">
-         <img src="/media/{{pr.image}}" alt="{{pr.name}}-img">
-         <span id="quantity{{pr.slug}}" class="bg-red-500 w-4 text-xs absolute top-0 right-0 aspect-square rounded-full text-center"></span>
+  <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32 pt-20">
+    <div class="px-4 pt-8">
+      <p class="text-xl font-medium">Order Summary</p>
+      <p class="text-gray-400">Check your items. And select a suitable shipping method.</p>
+      <div class="mt-8 space-y-3 rounded-lg bg-white px-2 py-4 sm:px-6 max-h-96 overflow-y-auto border">
+        {% if product_array %}
+        {% for pr in product_array %}
+        <div class="flex rounded-lg bg-white relative border py-2">
+          <img class="m-2 h-24 w-52 rounded-md object-contain object-center" src="/media/{{pr.product.image}}" alt="" />
+          <span class="bg-red-500 text-white w-4 text-xs absolute -top-2 -right-2 z-30 aspect-square rounded-full text-center">{{pr.quantity}}</span>
+          <div class="flex w-full flex-col px-4 py-4">
+            <span class="font-semibold">{{pr.product.name}}</span>
+            <span class="float-right text-gray-400">Sku: {{pr.product.sku}}</span>
+            <div class="flex space-x-2">
+              <span class="font-semibold text-2xl" >Rs. </span>
+              <div class="flex flex-col -space-y-2">
+                <span {% if pr.product.discounted_price %}class="line-through text-xs"{% endif %} id="productprice">{{pr.product.price}}</span>
+              <span class="font-semibold" id="productdiscountedprice">{{pr.product.discounted_price}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      {% endif %}
       </div>
     </div>
-  {% endfor %}
+    <div class="mt-10 px-4 pt-8 lg:mt-0">
+      <form  method="post" action="/shop/complete/"         id="checkoutform" name="checkoutform">
+        {% csrf_token %}
+      <p class="text-xl font-medium">Shipping Details</p>
+      <p class="text-gray-400">Complete your order by providing the following details.</p>
+      <div class="">
+        <label for="email" class="mt-4 mb-2 block text-sm font-medium">Email</label>
+        <input type="email" id="email" required name="email" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="youremail@gmail.com" />
+        <span class="text-sm text-red-500"></span>
+        <label for="phone_no" class="mt-4 mb-2 block text-sm font-medium">Mobile No.</label>
+        <input type="tel" id="phone_no" required name="phone_no" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="03XX XXXXXXX" />
+        <span class="text-sm text-red-500"></span>
+        <div class="flex">
+          <label for="first_name" class="w-2/4 mt-4 mb-2 block text-sm font-medium">First Name</label>
+        <label for="last_name" class="w-2/4 mt-4 mb-2 block text-sm font-medium">Last Name</label></div>
+        <div class="flex space-x-2">
+          <div class="flex flex-col">
+            <input type="text" required id="first_name" name="first_name" class="alpha w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 alpha focus:ring-blue-500" placeholder="First Name" />
+          <span class="text-sm text-red-500"></span>
+          </div>
+          <div class="flex flex-col">
+            <input type="text" required id="last_name" name="last_name" class="alpha w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 alpha focus:ring-blue-500" placeholder="Last Name" />
+          <span class="text-sm text-red-500"></span>
+        </div>
+      </div>
+        
+        <label for="address" class="mt-4 mb-2 block text-sm font-medium">Shipping Address</label>
+        <div class="flex flex-col space-y-2">
+          <input type="text" id="address" name="address" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Address" />
+          <span class="text-sm text-red-500"></span>
+          <input type="text" id="city" name="city" class="alpha w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="City" />
+          <span class="text-sm text-red-500"></span>
+          <input type="text" name="postal_code" class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Postal Code" />
+          <span class="text-sm text-red-500"></span>
+            <select
+            required
+            name="country"
+            id="country"
+            class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+            >
+              <option value="pakistan" selected>
+                Pakistan
+              </option>
+            </select>
+        </div>
+        <p class="mb-2 mt-10 text-lg font-medium">Payment Method</p>
+      <div class="relative">
+        <input class="peer hidden" id="radio_1" type="radio" name="radio" checked />
+        <span class="peer-checked:border-black absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+        <label class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" for="radio_1">
+          <div class="ml-5">
+            <span class="mt-2 font-semibold capitalize">cash on Delivery</span>
+            <p class="text-slate-500 text-sm leading-6"></p>
+          </div>
+        </label>
+      </div>
+        <!-- Total -->
+        <div class="mt-6 border-t border-b py-2">
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-900">Subtotal</p>
+            <p class="text-gray-900">Rs. {{sub_total}}</p>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-900">Shipping</p>
+            <p class="text-gray-900">Rs. {{shipping}}</p>
+          </div>
+        </div>
+        <div class="mt-6 flex items-center justify-between">
+          <p class="text-sm font-medium text-gray-900">Total</p>
+          <p class="text-2xl text-gray-900">Rs. {{total}}</p>
+        </div>
+      </div>
+    </form>
+      <button id="cfsb" type="button" class="mt-4 mb-8 w-full rounded-md bg-skapblue px-6 py-3 font-medium text-white">Place Order</button>
+    </div>
+  </div>
+  
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js" integrity="sha512-KaIyHb30iXTXfGyI9cyKFUIRSSuekJt6/vqXtyQKhQP6ozZEGY8nOtRS6fExqE4+RbYHus2yGyYg1BrqxzV6YA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-</div>
-{% endblock body %}
+</html>

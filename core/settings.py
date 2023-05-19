@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-%)ms04w-mz$=1lxj78voewsudhuj&2l)9aet25xc-je$s2_42u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['skapacademy.pk']
+ALLOWED_HOSTS = ['192.168.18.4','127.0.0.1']
 
 QUILL_CONFIGS = {
     'default':{

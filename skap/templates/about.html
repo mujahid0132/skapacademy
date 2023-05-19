@@ -1,8 +1,14 @@
 {% extends 'skapbase.html' %}
 {% load static %}
+{% block title %}About{% endblock title %}
+{% block breadcrumbtitle %}About{% endblock breadcrumbtitle %}
+{% block breadcrumb %}
+<a href="{{home_url}}">Home</a>&nbsp;>&nbsp;About
+{% endblock breadcrumb %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/about.css' %}" />
 {% endblock css %}
+
 {% block main %}
     
 <section class="w-full py-20 flex items-center px-[4vw] lg:px-[16vw] md:space-x-4 b850:space-x-10"> 

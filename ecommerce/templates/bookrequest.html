@@ -1,65 +1,95 @@
-{% extends 'shopbase.html' %} {% block body %}
-<form name="request_a_book" action="/shop/request-a-book/" method="post">
-  <span>contact information</span><br />
+{% extends 'shopbase.html' %}
+{% block title %}Request A Book{% endblock title %}
+{% block breadcrumbtitle %}Request A Book{% endblock breadcrumbtitle %}
+{% block breadcrumb %}
+<a href="{{home_url}}">Home</a>&nbsp;>&nbsp;<a href="{{shop_url}}">Shop</a>&nbsp;>&nbsp;Request A Book
+{% endblock breadcrumb %}
+{% block body %}
+<div
+  class="w-[80vw] mx-auto pt-5 flex flex-col space-y-3 items-center justify-between"
+>
+  <div class="py-4">
+    <span class="text-3xl font-semibold flex items-center justify-center"
+      >Request A Book</span
+    >
+    <div class="text-sm text-center">Please fill in the information below</div>
+  </div>
+<form name="request_a_book" action="/shop/request-a-book/" method="post" class="pb-6">
   {% csrf_token %}
-  <div class="flex flex-col ">
+  <div class="flex flex-col w-full sm:w-96 my-2">
+   <label for="email" class="block text-sm font-semibold px-2">Email:</label
+      >
     <input
     type="email"
     required
     name="email"
+    id="email"
     placeholder="Email"
-    class="border-2 border-black m-2 w-96"
-    id=""
+    class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+    
   />
   <span class="text-sm text-red-500"></span>
   </div>
-  <div class="flex flex-col ">
-  <input
+  <div class="flex flex-col w-full sm:w-96 my-2 ">
+ <label for="phone_no" class="block text-sm font-semibold px-2">Mobile No:</label
+      >
+    <input
     type="tel"
     required
     name="phone_no"
     placeholder="Mobile No."
-    class="border-2 border-black m-2 w-96"
+    class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
     id="phone_no"
     maxlength="12"
     />
     <span class="text-sm text-red-500"></span>
   </div>
-  <div class="flex flex-col ">
-  <input
+  <div class="flex flex-col w-full sm:w-96 my-2 ">
+ <label for="first_name" class="block text-sm font-semibold px-2">First Name:</label
+      >
+    <input
     type="text"
     required
     name="first_name"
+    id="first_name"
     placeholder="Firstname"
-    class="border-2 border-black m-2 w-96 alpha"
-    id=""
+    class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+    
     />
     <span class="text-sm text-red-500"></span>
   </div>
-  <div class="flex flex-col ">
-  <input
+  <div class="flex flex-col w-full sm:w-96 my-2 ">
+ <label for="last_name" class="block text-sm font-semibold px-2">Last Name:</label
+      >
+    <input
     type="text"
     required
     name="last_name"
+    id="last_name"
     placeholder="Lastname"
-    class="border-2 border-black m-2 w-96 alpha"
-    id=""
+    class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+    
     />
     <span class="text-sm text-red-500"></span>
   </div>
-  <div class="flex flex-col ">
-  <input
+  <div class="flex flex-col w-full sm:w-96 my-2 ">
+  <label for="book_name" class="block text-sm font-semibold px-2">Book Name:</label
+      >
+    <input
     type="text"
     required
     name="book_name"
+    id="book_name"
     placeholder="Book Name"
-    class="border-2 border-black m-2 w-96"
-    id=""
+    class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+    
     />
     <span class="text-sm text-red-500"></span>
   </div>
-  <button id="brsb" type="submit">submit</button>
+  <button id="brsb" type="submit" class="my-2 block btn relative z-40 text-white bg-skapblue border-2 border-gray-200 m-auto w-full sm:w-96 h-10">submit</button>
 </form>
+</div>
+
 {% endblock body %} {% block script %}
 <script>
   var cleave = new Cleave("#phone_no", {

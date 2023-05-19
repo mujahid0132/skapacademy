@@ -8,6 +8,8 @@ def become_a_tutor(request):
         cnic_image = request.FILES['cnic_image']
         latest_certificate_picture = request.FILES['latest_certificate_picture']
         cv =request.FILES['cv']
+        if any(file.size > 2 * 1024 * 1024 for file in [cnic_image, latest_certificate_picture, cv]):
+            return redirect('/')
         new_teacher = BecomeATeacher.objects.create(
         email =  request.POST.get('email'),
         name =  request.POST.get('name'),

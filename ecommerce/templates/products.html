@@ -1,8 +1,24 @@
 {% extends 'shopbase.html' %}
 {% load static tailwind_tags mptt_tags %}
+{% block title %}Shop{% endblock title %}
+{% block breadcrumbtitle %}Shop{% endblock breadcrumbtitle %}
+{% block breadcrumb %}
+<a href="{{home_url}}">Home</a>&nbsp;>&nbsp;Shop
+{% endblock breadcrumb %}
 {% block body %}
-<div>
-  <ul>
+<aside id="filterdiv" class="fixed top-0 z-50 flex w-full justify-end h-full overflow-hidden touch-manipulation transition-all duration-700"
+  style="right: -100%;">
+  <div class="grow h-full" onclick="filtertoggle()"></div>
+  <div class="flex flex-col items-center w-96 bg-white h-full shadow-2xl">
+    <div class="flex w-full items-center justify-between px-6 py-4 border-b-2">
+      <div class="space-x-2" >
+        <span class="font-semibold text-xl">Filter</span>
+        {% if request.GET.type %}<button onclick="clearfilters()" class="underline text-blue-400">clear filters</button>{% endif %}
+      </div>
+    <button onclick="filtertoggle()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+  </div>
+  <div class="p-4 w-full grow flex items-center justify-center space-y-3 flex-col py-8 overflow-y-auto">
+    <ul>
       {% recursetree productstype %}
       <li>
         <input
@@ -21,11 +37,16 @@
       </li>
       {% endrecursetree %}
     </ul>
-    <button onclick="sortandfilter('type')">
-      Filter
-    </button>
+   </div>
+      <button onclick="sortandfilter('type')" class="bg-skapblue w-11/12 text-white capitalize py-2 my-2 text-xs">Filter</button>
   </div>
-  <div>
+   </aside>
+<aside id="sortdiv" class="fixed top-0 z-50 flex w-full justify-end h-full overflow-hidden         touch-manipulation transition-all duration-700"
+  style="left:-100%;">
+  <div class="flex flex-col items-center w-96 bg-white h-full shadow-2xl">
+    <div class="flex w-full items-center justify-between px-6 py-4 border-b-2"><span class="font-semibold text-xl">Sort</span><button onclick="sorttoggle()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+  <div class="p-4 w-full grow flex items-center justify-center space-y-3 flex-col py-8 overflow-y-auto">
+    <div>
       <input id="l_to_h" class="sort" name="sort" value="price" type="radio" />
       <label for="l_to_h">price low to high</label>  
       <br>
@@ -38,60 +59,27 @@
       <input id="popularity" class="sort" name="sort" value="-popularity" type="radio" />
       <label for="popularity">sort by popularity</label> 
       <br>
-      <button onclick="sortandfilter('sort')">
-      Sort
-    </button>
   </div>
-  <div class="md:flex justify-center flex-nowrap sm:px-6 lg:px-32">
-      <div class="hidden px-8 w-96">
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2 text-lg">Clothes</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2  text-lg">Electronics</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2 text-lg">Shoes</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2  text-lg">Watches</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2  text-lg">Health and Beauty</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2 text-lg">Kids and Babies</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2 text-lg">Sports</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class=" font-semibold px-5 py-2 text-lg">Household</button>
-        </div>
-        <div class=" md:text-center border">
-          <button class="font-semibold px-5 py-2 text-lg">Jewelary</button>
-        </div>
-        <div class="md:border md:mt-4 md:p-3 md:items-center md:justify-center md:flex lg:p-5">
-          <button class="text-white bg-red-800 font-semibold  rounded-full py-2 px-3.5 ">Request a Book</button>
-        </div>
-      </div>
+   </div>
+      <button onclick="sortandfilter('sort')" class="bg-skapblue w-11/12 text-white capitalize py-2 my-2 text-xs">Sort</button>
+  </div>
+  <div class="grow h-full" onclick="sorttoggle()"></div>
+</aside>
+
+  <div class="flex justify-center flex-nowrap sm:px-6 lg:px-32">
       <div class="">
-        <div class="flex justify-between p-4 sm:p-5">
-          <p class="font-bold text-sm sm:text-base  md:text-lg">LATEST BOOKS</p>
-          <ul class="text-xs flex space-x-2 py-1 sm:text-sm sm:space-x-3 md:space-x-2">
-            <li>All</li>
-            <li>Electronics</li>
-            <li>Shoes</li>
-            <li>Clothes</li>
-          </ul>
+        <div class="flex justify-between items-center p-4">
+          <button onclick="sorttoggle()" class="bg-skapblue px-8 text-white capitalize py-2.5 text-sm sm:text-base md:text-lg">Sort</button>
+          <p class="font-bold text-sm sm:text-base md:text-lg">All Books</p>
+            <button onclick="filtertoggle()" class="bg-skapblue px-8 text-white capitalize py-2.5 text-sm sm:text-base md:text-lg flex items-center space-x-1 relative"><div id="filternumber" class="bg-skapred text-white w-4 text-xs absolute -top-1 -right-1 aspect-square rounded-full">0</div><span>Filter</span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
         </div>
         <div class="h-0.5 bg-gray-200 mx-4 mb-4"></div>
-        <div class="mx-6 grid grid-cols-2 sm:grid-cols-3 gap-2 my-8 md:grid-cols-4 xl:grid-cols-5 md:gap-5 md:mx-4 place-content-center">
+        <div class="mx-6 grid grid-cols-2 sm:grid-cols-3 gap-2 my-8 md:grid-cols-4 xl:grid-cols-5 md:gap-5 md:mx-4 place-items-center">
           {% if page_obj.0 %}
           {% for pr in page_obj %}
           <a href="/shop/products/{{pr.slug}}">
           <div class="py-4 px-2 rounded-2xl flex items-center justify-center flex-col">
-              <img src="/media/{{pr.image}}" alt="productimg" class="h-48 sm:h-60 w-full rounded-md object-contain object-center">
+              <img src="/media/{{pr.image}}" alt="productimg" class="h-48 w-[160px] sm:h-60 rounded-md object-contain object-center">
             <p class="text-center text-xs sm:text-base pt-2">{{pr.name}}</p>
             <div class="flex items-center justify-center pt-2 space-x-2">
               <span class="font-semibold text-xl" >Rs. </span>
@@ -100,25 +88,25 @@
               <span class="font-semibold text-sm" id="productdiscountedprice">{{pr.discounted_price}}</span>
               </div>
             </div>
-            <div class="text-center">
-              {% comment %} <button class="text-white bg-red-800 text-sm font-semibold  rounded-full py-2 px-3 capitalize md:text-xs md:px-2 ">Add To Cart</button> {% endcomment %}
-            </div>
           </div>
         </a>
           {% endfor %}
-          {% else %} <span class="w-full text-center">no products to show</span>{% endif %}
+          {% else %}
+          <div class="flex items-center ">
+            <button onclick="clearfilters()" class="w-full text-center">no products to show {% if request.GET.type %}<span class="underline text-blue-400">clear filters</span>{% endif %}</button>
+          </div>
+          {% endif %}
         </div>
-        <div class="flex items-center justify-center my-6  md:hidden">
-          <button class="text-white bg-red-800 text-base w-13 rounded-full py-2 px-4">Request a Book</button>
+        <div class="flex items-center justify-center my-6">
+          <a href="/shop/request-a-book/" class="text-white bg-red-800 text-base w-13 rounded-full py-2 px-4">Request a Book</a>
         </div>
       </div>      
     </div>
   
-  <div class="pagination flex items-center justify-center">
-    <span class="step-links space-x-2">
+  <div class="pagination flex items-center justify-center h-8 space-x-3 my-4">
       {% if page_obj.has_previous %}
-        <a class="bg-skapred text-white" href="?page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&laquo; first</a>
-        <a class="bg-skapred text-white px-2" href="?page={{ page_obj.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&laquo;</a>
+        <a class="border border-black h-full aspect-1 text-xl flex items-center justify-center" href="?page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&laquo;&laquo;</a>
+        <a class="border border-black h-full aspect-1 text-xl flex items-center justify-center" href="?page={{ page_obj.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&laquo;</a>
       {% endif %}
   
       <span class="current-page">
@@ -126,62 +114,99 @@
       </span>
   
       {% if page_obj.has_next %}
-        <a class="bg-skapred text-white px-2" href="?page={{ page_obj.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&raquo;</a>
+        <a class="border border-black h-full aspect-1 text-xl flex items-center justify-center" href="?page={{ page_obj.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&raquo;</a>
       {% endif %}
       {% if page_obj.number != page_obj.paginator.num_pages %}
-        <a class="bg-skapred text-white" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">last &raquo;</a>
+        <a class="border border-black h-full aspect-1 text-xl flex items-center justify-center" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">&raquo;&raquo;</a>
       {% endif %}
-    </span>
   </div>
-  
-  
-  
-    <script>
-      function checkChildren(checkbox) {
-        let parent = checkbox.parentNode;
-        let children = parent.getElementsByTagName("input");
-        for (let i = 0; i < children.length; i++) {
-          children[i].checked = checkbox.checked;
-        }
-      }
-      function sortandfilter(operation) {
-        let checkboxes = document.querySelectorAll(
-          `input:checked.${operation}`
-        );
-        let selected = Array.from(checkboxes).map(function (checkbox) {
-            return checkbox.value;
-          });  
-        let parameters = new URLSearchParams(window.location.search);
-        let url = new URL(window.location.href);
-        let currentUrl = url.origin + url.pathname;
-        if (selected.length !== 0) {
-            parameters.set(operation, selected.join("_"));
-        }
-        else{
-          parameters.delete(operation)
-        }
-        const newUrl = `${currentUrl}?${parameters.toString()}`;
-        window.history.replaceState(null, null, newUrl);
-        window.location =  newUrl
-      }
-      function checkticks() {
-          let parameters = new URLSearchParams(window.location.search);
-          for (const paramName of parameters.keys()) {
-              let checkboxes = document.querySelectorAll(
-                `input.${paramName}`
-              );
-              let selected = parameters.getAll(paramName).join().split("_")
-              checkboxes.forEach((element) => {
-                  // console.log(selected);
-                  // console.log(element.value);
-                  if (selected.includes(element.value)) {
-                      console.log(element.checked = true);
-                  }
-              })
-              // checkboxes.checked = true
-          }
-          // console.log(parameters);
-      }
-      checkticks()
-    </script>
 {% endblock body %}
+{% block script %}
+<script>
+  function checkChildren(checkbox) {
+    let parent = checkbox.parentNode;
+    let children = parent.getElementsByTagName("input");
+    for (let i = 0; i < children.length; i++) {
+      children[i].checked = checkbox.checked;
+    }
+  }
+  function sortandfilter(operation) {
+    let checkboxes = document.querySelectorAll(
+      `input:checked.${operation}`
+    );
+    let selected = Array.from(checkboxes).map(function (checkbox) {
+        return checkbox.value;
+      });  
+    let parameters = new URLSearchParams(window.location.search);
+    let url = new URL(window.location.href);
+    let currentUrl = url.origin + url.pathname;
+    if (selected.length !== 0) {
+      parameters.set(operation, selected.join("_"));
+    }
+    else{
+      parameters.delete(operation)
+    }
+    const newUrl = `${currentUrl}?${parameters.toString()}`;
+    window.history.replaceState(null, null, newUrl);
+    window.location =  newUrl
+  }
+  function clearfilters() {
+    let parameters = new URLSearchParams(window.location.search);
+    parameters.delete("type")
+    let url = new URL(window.location.href);
+    let currentUrl = url.origin + url.pathname;
+    const newUrl = `${currentUrl}?${parameters.toString()}`;
+    window.history.replaceState(null, null, newUrl);
+    window.location =  newUrl
+  }
+  function getfiltercount() {
+    let parameters = new URLSearchParams(window.location.search);
+    let filter = parameters.get("type")
+    if (filter !== null) {
+      let arraynumber = filter.split("_").length
+      let filternumber = document.getElementById("filternumber")
+      filternumber.innerHTML = arraynumber
+    }
+  }
+  getfiltercount()
+  function checkticks() {
+      let parameters = new URLSearchParams(window.location.search);
+      for (const paramName of parameters.keys()) {
+          let checkboxes = document.querySelectorAll(
+            `input.${paramName}`
+          );
+          let selected = parameters.getAll(paramName).join().split("_")
+          checkboxes.forEach((element) => {
+              // console.log(selected);
+              // console.log(element.value);
+              if (selected.includes(element.value)) {
+                  console.log(element.checked = true);
+              }
+          })
+          // checkboxes.checked = true
+      }
+      // console.log(parameters);
+  }
+  checkticks()
+  let filterdiv = document.getElementById("filterdiv")
+  function filtertoggle() {
+    let currentpos = filterdiv.style.right;
+      if (currentpos == "0px") {
+        filterdiv.style.right = "-100%"
+      }
+      else{
+          filterdiv.style.right = "0"
+        }
+} 
+  let sortdiv = document.getElementById("sortdiv")
+  function sorttoggle() {
+    let currentpos = sortdiv.style.left;
+      if (currentpos == "0px") {
+        sortdiv.style.left = "-100%"
+      }
+      else{
+          sortdiv.style.left = "0"
+        }
+} 
+</script>
+{% endblock script %}
