@@ -35,11 +35,24 @@
     
                  
             });
-    
-     
+            $(document).on('click', '.btn_excel', function(dl) 
+            {
+                event.preventDefault();
+                var elt = document.querySelector("table")
+                var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                console.log(elt);
+                return XLSX.writeFile(wb,('PageContent.' + ('xlsx')));
+                
+            
+            });
+            function ExportToExcel(type, fn, dl) {
+            
+            
+        }
      
         });
-        </script>
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <style>
       *{
         margin: 0;
@@ -67,10 +80,13 @@
     {% tailwind_css %}
 </head>
 <body>
-    <div id="content" class="flex items-center justify-center flex-col">
+    <div id="content" class="flex items-center justify-center flex-col overflow-x-auto">
         {% block body %}{% endblock body %}
       </div>
-    <button class="btn_print bg-gray-500">Generate PDF</button>      
+    <div class="my-6 flex items-center justify-center w-full space-x-3">
+      <button class="btn_print bg-gray-500 py-1 px-3">Generate PDF</button>      
+    <button class="btn_excel bg-gray-500 py-1 px-3">Generate Excel File</button>      
+    </div>
 </body>
 </html>
 

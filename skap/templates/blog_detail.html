@@ -19,7 +19,7 @@
     <span class="text-white absolute z-30 top-2/4 left-2/4 -translate-x-2/4 bg-black w-full h-full bg-opacity-60 flex items-center justify-center -translate-y-2/4 font-bold capitalize text-5xl text-center animate-none">{{blog.title}}</span> 
     <span class="text-white absolute z-30 bottom-4 right-4 date flex items-center justify-center font-bold capitalize text-2xl text-center animate-none">{{blog.date_posted.date}}</span> 
   </div>
-  <div class="reset">
+  <div class="prose lg:prose-lg max-w-none">
     {{blog.description.html|safe}} 
   </div>
 </div>
